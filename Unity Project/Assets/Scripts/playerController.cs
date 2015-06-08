@@ -38,11 +38,11 @@ public class playerController : MonoBehaviour
 		rigidbody.AddForce(movement * speed);
 	}
 	
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider col)
 	{
-		if (collision.gameObject.tag == "Slow") 
+		if (col.gameObject.tag == "Slow") 
 		{
-			//Halve speed
+			print("Slow has been called mothertruckers!");
 		}
 
 		/*if (collision.gameObject.tag == "Kill") 
