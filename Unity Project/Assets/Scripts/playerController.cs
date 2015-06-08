@@ -13,7 +13,7 @@ public class playerController : MonoBehaviour
     void Start()
     {
         speed = 100.0f;
-        rotationSpeed = 25.0f;
+        rotationSpeed = 360.0f;         // 360 degrees rotation per second
     }
 	
 	void FixedUpdate () 
@@ -35,7 +35,7 @@ public class playerController : MonoBehaviour
             transform.LookAt(new Vector3(transform.position.x + rigidbody.velocity.x, transform.position.y, transform.position.z + rigidbody.velocity.z));
 
             // lerp from current rotation to intended facing direction
-            transform.rotation = Quaternion.Lerp(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
         }
 
 		//Add the force to the rigid body, depending on the speed.
