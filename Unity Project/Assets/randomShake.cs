@@ -20,12 +20,12 @@ public class RandomShake : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        newPos = Random.insideUnitSphere;
+       // newPos = Random.insideUnitSphere;
 
         float distanceBetweenPoints = (transform.position - newPos).magnitude;
         if (distanceBetweenPoints <= triggerDistance)
         {
-            newPos = Random.insideUnitSphere;
+            newPos = transform.position - Random.insideUnitSphere;
         }
 
 
