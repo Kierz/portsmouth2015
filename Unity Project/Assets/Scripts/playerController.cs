@@ -5,19 +5,13 @@
 using UnityEngine;
 using System.Collections;
 
-public class playerController : MonoBehaviour {
-	
+public class playerController : MonoBehaviour
+{	
 	public float speed;
-	private Rigidbody rb;
 	
-	// Use this for initialization
-	void Start () {
-		
-		rb = GetComponent<Rigidbody>();
-	}
-
-	void FixedUpdate () {
-		
+	
+	void FixedUpdate () 
+    {		
 		//Assign and update the movement values. Yo.
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -30,6 +24,6 @@ public class playerController : MonoBehaviour {
 
 	
 		//Add the force to the rigid body, depending on the speed.
-		rb.AddForce (movement * speed);
-	}
+		rigidbody.AddForce (movement * speed);
+    }
 }
