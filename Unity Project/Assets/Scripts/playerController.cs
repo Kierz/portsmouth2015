@@ -1,23 +1,23 @@
-﻿//Last edited by James Davidson
+﻿//Last edited by Kierz Phillips
 //08.06.2015
 //playerController.cs
 
 using UnityEngine;
 using System.Collections;
 
-public class playerController : MonoBehaviour {
-	
-	public float speed;
-	private Rigidbody rb;
-	
-	// Use this for initialization
-	void Start () {
-		
-		rb = GetComponent<Rigidbody>();
-	}
+public class playerController : MonoBehaviour
+{	
+	private float speed;
+    private float rotationSpeed;
 
-	void FixedUpdate () {
-		
+    void Start()
+    {
+        speed = 100.0f;
+        rotationSpeed = 45.0f;
+    }
+	
+	void FixedUpdate () 
+    {		
 		//Assign and update the movement values. Yo.
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -25,17 +25,17 @@ public class playerController : MonoBehaviour {
 		//Store the movement in a vector3. X, Y & Z. We don't move up on the Y axis so set to 0.
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 
-		print ("Test 1 " + transform.rotation);
+        // store current rotation
+        Quaternion currentRotation = transform.rotation;
 
-		transform.forward = rigidbody.velocity;
+        // point object at intended facing direction
+        transform.LookAt(new Vector3(transform.position.x + rigidbody.velocity.x, transform.position.y, transform.position.z + rigidbody.velocity.z));
 
-		print ("Test 2 " + transform.rotation);
+        // lerp from current rotation to intended facing direction
+        transform.rotation = Quaternion.Lerp(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
 	
 		//Add the force to the rigid body, depending on the speed.
-		rb.AddForce (movement * speed);
-
-		//Lerp so that the player does not rotate too quickly
-		//Vector3.Lerp(movement, Vector3, float rate): Vector3;
+		rigidbody.AddForce(movement * speed);
 	}
 	
 	void OnCollisionEnter(Collision collision)
