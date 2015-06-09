@@ -39,7 +39,7 @@ public class Player : Character
 
 	void Start ()
     {
-        currentState =          ePlayerState.ePlayerStateInactive;
+        SetState(		        ePlayerState.ePlayerStateInactive);
         speed =                 32.0f;
         rotationSpeed =         360.0f;         // 360 degrees rotation per second
         invincibilityTime =     2.0f;
@@ -57,6 +57,7 @@ public class Player : Character
 
             case ePlayerState.ePlayerStateNormal:
                 Move();
+				UpdateFire();
                 break;
 
             case ePlayerState.ePlayerStateInvincible:
@@ -68,6 +69,7 @@ public class Player : Character
                 }
 
                 Move();
+				UpdateFire();
                 break;
         }
 	}
@@ -86,6 +88,14 @@ public class Player : Character
                 currentState = ePlayerState.ePlayerStateNormal;
         }
     }
+
+	private void UpdateFire()
+	{
+		if ( Input.GetKeyDown( KeyCode.Space ) )
+		{
+			Fire( transform.position, transform.rotation );
+		}
+	}
 
     private void Move()
     {
@@ -187,4 +197,30 @@ public class Player : Character
 		
 		return false;
 	}
+
+	private void SetState( ePlayerState state )
+	{
+		// early out if no change
+		if ( currentState == state )
+			return;
+
+		currentState = state;
+
+		switch ( state )
+		{
+			case ePlayerState.ePlayerStateInactive:
+				renderer.enabled = false;
+			break;
+
+			case ePlayerState.ePlayerStateInvincible:
+
+			break;
+
+			case ePlayerState.ePlayerStateNormal:
+				renderer.enabled = true;
+			break;
+
+		}
+	}
+
 }

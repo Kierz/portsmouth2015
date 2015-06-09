@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
 	void Start ()
     {
         lifeSpanRemaining = 1.0f;
-		speed = 0.75f;
+		speed = 50.0f;
 	}
 	
 	void Update () 
@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
 
         else
         {
-             transform.Translate(transform.forward * speed);
+			transform.position += transform.forward * Time.deltaTime * speed;
         }
 	}
 }

@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
 		foreach ( GameObject background in backgrounds )
 		{
 			background.transform.position -= new Vector3( 0.0f, 0.0f, gameSpeed * Time.deltaTime );
-			
+
 			if ( background.transform.position.z <= GetDestructionLineZ() )
 			{
 				background.transform.position += new Vector3( background.transform.position.x, background.transform.position.y, background.renderer.bounds.size.z * 3.0f );

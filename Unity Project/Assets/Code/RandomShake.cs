@@ -11,26 +11,25 @@ public class RandomShake : MonoBehaviour
     void Start()
     {
 		triggerDistance = 0.25f;
-		originalPos = transform.position;
+		originalPos = transform.localPosition;
 		CreateNewPosition();        
     }
 
     void Update()
-    {   
-        float distanceBetweenPoints = (transform.position - newPos).magnitude;
+    {
+		float distanceBetweenPoints = ( transform.localPosition - newPos ).magnitude;
 
         if (distanceBetweenPoints <= triggerDistance)
         {
 			CreateNewPosition();
         }
-		
-		transform.position = Vector3.MoveTowards( transform.position, newPos, Time.deltaTime * 20.0f );
+
+		transform.localPosition = Vector3.MoveTowards( transform.localPosition, newPos, Time.deltaTime );
     }
 
 	private void CreateNewPosition()
 	{
-		print( "newposition" );
-		Vector3 randomOffset = Random.insideUnitSphere;
+		Vector3 randomOffset = Random.insideUnitSphere * 0.32f;
 
 		randomOffset.y = 0.0f;
 
