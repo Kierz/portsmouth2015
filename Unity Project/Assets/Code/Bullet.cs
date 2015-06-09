@@ -3,17 +3,14 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour 
 {
-
     private float lifeSpanRemaining;
-    private float speed = 0.75f;
+    private float speed = 0.5f;
 
-	// Use this for initialization
 	void Start ()
     {
         lifeSpanRemaining = 5.0f;
 	}
 	
-	// Update is called once per frame
 	void Update () 
     {
         lifeSpanRemaining -= Time.deltaTime;
@@ -22,6 +19,7 @@ public class Bullet : MonoBehaviour
         {
             DestroyObject(gameObject);
         }
+
         else
         {
              transform.Translate(transform.forward * speed);

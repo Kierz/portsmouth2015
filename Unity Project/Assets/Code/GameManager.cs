@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private float               countdown;
     private float               countdownStart;
 
-    private List<Player>        players;
+    private Player[]            players;
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
@@ -40,7 +40,11 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
     {
-        countdownStart = 10.0f;             //  10 second countdown
+        // get all players
+        players =           FindObjectsOfType<Player>();
+        
+        //  10 second countdown
+        countdownStart =    10.0f;             
 
         // setup world extents
         worldTop =          topRightAnchorPoint.position.y;
@@ -96,6 +100,7 @@ public class GameManager : MonoBehaviour
         // update active entities
         foreach (Entity entity in activeEntities)
         {
+            // move player down the screen relative to the game speed
             entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
 
             if (entity.transform.position.y < GetDestructionLineY())
@@ -107,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameOver()
     {
-        // switch state when countdown reaches 0
+        // switch state when countdown reaches zero
         if ((countdown -= Time.deltaTime) < 0)
         {
             ChangeState(eGameState.eGameStateReady);
