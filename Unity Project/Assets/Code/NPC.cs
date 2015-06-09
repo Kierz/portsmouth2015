@@ -3,23 +3,24 @@ using System.Collections;
 
 public class NPC : Character
 {
-    private int health, speed, xpos, ypos;
-    bool isDead;
-
-    public GameManager gm;
+    private int health, speed;
+    private float xpos, zpos = 0;
+    private bool isDead;
 
 	void Start() 
     {
         isDead = false;
         health = 1;
-        xpos = Random.Range(((int)GameManager.Singleton().worldTop - (int)GameManager.Singleton().worldLeft), (int)GameManager.Singleton().worldTop);
+        xpos = Random.Range(GameManager.Singleton().GetWorldBottomLeft(), GameManager.Singleton().GetWorldTopRight());
+        transform.position = new Vector3(xpos, 0.0f, zpos);
+
 	}
 	
     void Update() 
     {
         if (isDead)
         {
-            break;
+            return;
         }
 
 	    if(health <= 0)
@@ -27,7 +28,7 @@ public class NPC : Character
             explode();
             isDead = true;
         }
-	}
+    }
 
     void explode()
     {
