@@ -14,6 +14,15 @@ public class GameManager : MonoBehaviour
     static private GameManager  gm;             // singleton!
 
     public eGameState           currentState;
+    
+    // these are used to calculate the game world dimensions
+    public Transform            bottomLeftAnchorPoint;
+    public Transform            topRightAnchorPoint;
+
+    private float               worldTop, worldBottom;
+    private float               worldLeft, worldRight;
+    private float               worldWidth;
+    private float               worldHeight;
 
     private float               gameSpeed;      // this is used for the background scrolling speed and the player movement
     private float               countdown;
@@ -23,13 +32,25 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
+    private int                 numActivePlayers;
+
     // singleton!!!
-    static GameManager Singleton() { return gm; }
+    public static GameManager Singleton() { return gm; }
 
 
 	void Start ()
     {
         countdownStart = 10.0f;             //  10 second countdown
+
+        // setup world extents
+        worldTop =          topRightAnchorPoint.position.y;
+        worldBottom =       bottomLeftAnchorPoint.position.y;
+        worldLeft =         bottomLeftAnchorPoint.position.x;
+        worldRight =        topRightAnchorPoint.position.x;
+
+        // get world dimensions
+        worldWidth =        worldRight - worldLeft;
+        worldHeight =       worldTop - worldBottom;
 
         // setup the game
 	    ChangeState(eGameState.eGameStateReady);
@@ -37,6 +58,8 @@ public class GameManager : MonoBehaviour
 
 	void Update ()
     {
+        numActivePlayers = GetNumPlayers();
+
         switch (currentState)
         {
             case eGameState.eGameStateReady:
@@ -55,21 +78,31 @@ public class GameManager : MonoBehaviour
 
     private void UpdateReady()
     {
-
-
+        if (numActivePlayers > 0)
+        {
+            ChangeState(eGameState.eGameStateActive);
+            return;
+        }
     }
 
     private void UpdateActive()
     {
-        int numPlayers = GetNumPlayers();
-
-        if (numPlayers == 0)
+        if (numActivePlayers == 0)
         {
             ChangeState(eGameState.eGameStateGameOver);
             return;
         }
 
+        // update active entities
+        foreach (Entity entity in activeEntities)
+        {
+            entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
 
+            if (entity.transform.position.y < GetDestructionLineY())
+            {
+                DeactivateEntity(entity);
+            }
+        }
     }
 
     private void UpdateGameOver()
@@ -152,5 +185,22 @@ public class GameManager : MonoBehaviour
     private void CreateEntity()
     {
 
+    }
+
+    private string GetCoundownAsString()
+    {
+        int displayCountdown = (int)Mathf.Floor(countdown) + 1;
+
+        return displayCountdown.ToString();
+    }
+
+    public Vector3 GetWorldCentre()
+    {
+        return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f);
+    }
+
+    public float GetDestructionLineY()
+    {
+        return worldBottom - (worldHeight * 0.5f);
     }
 }

@@ -10,7 +10,10 @@ public class Player : Character
         ePlayerStateInvincible,
     };
 
-    private ePlayerState currentState;
+
+    private int             lives;
+    private ePlayerState    currentState;
+
 
 
     public ePlayerState GetState() { return currentState; }
@@ -25,4 +28,10 @@ public class Player : Character
     {
 	
 	}
+
+
+    private void Respawn()
+    {
+        transform.position = GameManager.Singleton().GetWorldCentre();
+    }
 }
