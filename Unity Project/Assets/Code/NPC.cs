@@ -19,7 +19,7 @@ public class NPC : Character
     {
         if (isDead)
         {
-            break;
+            
         }
 
 	    if(health <= 0)

@@ -52,9 +52,7 @@ public class Player : Character
         switch (currentState)
         {
             case ePlayerState.ePlayerStateInactive:
-                //Game waits for player to press start before bat control is authorised
-                if (Input.GetButtonDown("Start_P" + joystick.ToString()))
-                    currentState = ePlayerState.ePlayerStateNormal;
+                UpdateInactive();
                 break;
 
             case ePlayerState.ePlayerStateNormal:
@@ -73,6 +71,21 @@ public class Player : Character
                 break;
         }
 	}
+
+    private void UpdateInactive()
+    {
+        if (inputType == eInputType.eInputTypeController)
+        {
+            //Game waits for player to press start before bat control is authorised
+            if (Input.GetButtonDown("Start_P" + joystick.ToString()))
+                currentState = ePlayerState.ePlayerStateNormal;
+        }
+        else
+        {
+            if (Input.GetButtonDown("Submit"))
+                currentState = ePlayerState.ePlayerStateNormal;
+        }
+    }
 
     private void Move()
     {
