@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        lifeSpanRemaining = 5.0f;
+        lifeSpanRemaining = 1.0f;
 	}
 	
 	// Update is called once per frame
