@@ -3,33 +3,39 @@ using System.Collections;
 
 public class RandomShake : MonoBehaviour
 {
+	private Vector3 originalPos;
     private Vector3 newPos;
-    float triggerDistance = 0.01f;
+    private float triggerDistance;
+
      
     void Start()
     {
-        newPos = Random.insideUnitSphere;
+		triggerDistance = 0.25f;
+		originalPos = transform.position;
+		CreateNewPosition();        
     }
 
-    // Update is called once per frame
     void Update()
-    {        
-
+    {   
         float distanceBetweenPoints = (transform.position - newPos).magnitude;
 
         if (distanceBetweenPoints <= triggerDistance)
         {
-            newPos = Random.insideUnitSphere*0.5f;
+			CreateNewPosition();
         }
-
-
-        transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 30);
-        
-
-      
-
-
+		
+		transform.position = Vector3.MoveTowards( transform.position, newPos, Time.deltaTime * 20.0f );
     }
+
+	private void CreateNewPosition()
+	{
+		print( "newposition" );
+		Vector3 randomOffset = Random.insideUnitSphere;
+
+		randomOffset.y = 0.0f;
+
+		newPos = originalPos + randomOffset;
+	}
 }
 	
 	

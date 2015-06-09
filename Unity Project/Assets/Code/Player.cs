@@ -40,7 +40,7 @@ public class Player : Character
 	void Start ()
     {
         currentState =          ePlayerState.ePlayerStateInactive;
-        speed =                 100.0f;
+        speed =                 32.0f;
         rotationSpeed =         360.0f;         // 360 degrees rotation per second
         invincibilityTime =     2.0f;
         speedFactor =           1.0f;
@@ -122,8 +122,13 @@ public class Player : Character
 
         // lerp from current rotation to intended facing direction
         transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
-    
-        transform.position += (movement * speed * speedFactor * Time.deltaTime);
+
+		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
+
+		if ( !IsOffScreen( newPosition ) )
+		{
+			transform.position = newPosition;
+		}
     }
 
     private void Respawn()
@@ -165,4 +170,21 @@ public class Player : Character
             speedFactor = 1.0f;
         }
     }
+
+	private bool IsOffScreen(Vector3 position)
+	{
+		if ( position.x < GameManager.Singleton().GetWorldLeft() )
+			return true;
+
+		if ( position.x > GameManager.Singleton().GetWorldRight() )
+			return true;
+
+		if ( position.z > GameManager.Singleton().GetWorldTop() )
+			return true;
+
+		if ( position.z < GameManager.Singleton().GetWorldBottom() )
+			return true;
+		
+		return false;
+	}
 }
