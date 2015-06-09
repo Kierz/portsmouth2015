@@ -13,16 +13,16 @@ public class GameManager : MonoBehaviour
 
     static private GameManager  gm;             // singleton!
 
-    public eGameState           currentState;
+    private eGameState          currentState;
     
     // these are used to calculate the game world dimensions
     public Transform            bottomLeftAnchorPoint;
     public Transform            topRightAnchorPoint;
 
-    private float               worldTop, worldBottom;
-    private float               worldLeft, worldRight;
-    private float               worldWidth;
-    private float               worldHeight;
+    public float                worldTop, worldBottom;
+    public float                worldLeft, worldRight;
+    public float                worldWidth;
+    public float                worldHeight;
 
     private float               gameSpeed;      // this is used for the background scrolling speed and the player movement
     private float               countdown;
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
 
         foreach (Player player in players)
         {
-            if (player.GetState() == Player.ePlayerState.ePlayerStateActive)
+            if (player.GetState() != Player.ePlayerState.ePlayerStateInactive)
                 playerCount++;
         }
 
