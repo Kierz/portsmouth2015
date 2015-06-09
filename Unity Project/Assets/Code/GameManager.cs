@@ -13,22 +13,22 @@ public class GameManager : MonoBehaviour
 
     static private GameManager  gm;             // singleton!
 
-    public eGameState           currentState;
+    private eGameState          currentState;
     
     // these are used to calculate the game world dimensions
     public Transform            bottomLeftAnchorPoint;
     public Transform            topRightAnchorPoint;
 
-    private float               worldTop, worldBottom;
-    private float               worldLeft, worldRight;
-    private float               worldWidth;
-    private float               worldHeight;
+    public float                worldTop, worldBottom;
+    public float                worldLeft, worldRight;
+    public float                worldWidth;
+    public float                worldHeight;
 
     private float               gameSpeed;      // this is used for the background scrolling speed and the player movement
     private float               countdown;
     private float               countdownStart;
 
-    private List<Player>        players;
+    private Player[]            players;
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
@@ -40,7 +40,11 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
     {
-        countdownStart = 10.0f;             //  10 second countdown
+        // get all players
+        players =           FindObjectsOfType<Player>();
+        
+        //  10 second countdown
+        countdownStart =    10.0f;             
 
         // setup world extents
         worldTop =          topRightAnchorPoint.position.y;
@@ -96,6 +100,7 @@ public class GameManager : MonoBehaviour
         // update active entities
         foreach (Entity entity in activeEntities)
         {
+            // move player down the screen relative to the game speed
             entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
 
             if (entity.transform.position.y < GetDestructionLineY())
@@ -107,14 +112,12 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameOver()
     {
-        // switch state when countdown reaches 0
+        // switch state when countdown reaches zero
         if ((countdown -= Time.deltaTime) < 0)
         {
             ChangeState(eGameState.eGameStateReady);
         }
     }
-
-
 
     private void ChangeState(eGameState state)
     {
@@ -134,7 +137,6 @@ public class GameManager : MonoBehaviour
 
             case eGameState.eGameStateGameOver:
                 countdown = countdownStart;
-
                 break;
         }
     }
@@ -150,7 +152,7 @@ public class GameManager : MonoBehaviour
 
         foreach (Player player in players)
         {
-            if (player.GetState() == Player.ePlayerState.ePlayerStateActive)
+            if (player.GetState() != Player.ePlayerState.ePlayerStateInactive)
                 playerCount++;
         }
 

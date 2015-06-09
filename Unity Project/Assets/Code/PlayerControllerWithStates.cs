@@ -12,14 +12,16 @@ public class PlayerControllerWithStates : MonoBehaviour {
 	//Normal = Player is active.
 	//Invincible = Player is invincible.
 
-	enum ePlayerState {ePlayerStateInactive, ePlayerStateNormal, ePlayerStateInvincible};
+	public enum ePlayerState {ePlayerStateInactive, ePlayerStateNormal, ePlayerStateInvincible};
 
 	//Initial state is Inactive.
-	ePlayerState currentState = ePlayerState.ePlayerStateInactive;
+	public ePlayerState currentState = ePlayerState.ePlayerStateInactive;
 	
 	private float speed;
 	private float rotationSpeed;
 	private float invincibilityTime;
+
+    public int joystick;
 
 	void Start()
 	{
@@ -119,19 +121,19 @@ public class PlayerControllerWithStates : MonoBehaviour {
 	}
 	
 	void FixedUpdate () 
-	{	
+	{
 		switch (currentState) 
 		{
 		case ePlayerState.ePlayerStateInactive:
 		//ePlayerStateInactive START
 
-			/*
-			if(Start button is pressed)
+			string joystickString = joystick.ToString();
+			if(Input.GetButtonDown("Start_P" + joystickString) == true)
 			{
 				//Game waits for player to press start before bat control is authorised
-				currentState = ePlayerStateNormal;
+                currentState = ePlayerState.ePlayerStateNormal;
 			}
-			*/
+		
 			break;
 		//ePlayerStateInactive END
 
