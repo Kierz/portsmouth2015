@@ -72,45 +72,6 @@ public class Player : Character
         }
 	}
 
-<<<<<<< HEAD
-    private void Move()
-    {
-        float dirHorizontal, dirVertical, moveHorizontal, moveVertical;
-
-        //Retrieve the joystick number. Then string concatenates the number on the end.
-        //This is so we can split up which controller is being used on input
-        string joystickString = joystick.ToString();
-
-        if (inputType == eInputType.eInputTypeController)
-        {
-            dirHorizontal = Input.GetAxis("JoyStickR Horizontal_P" + joystickString);
-            dirVertical = Input.GetAxis("JoyStickR Vertical_P" + joystickString);
-            moveHorizontal = Input.GetAxis("JoyStickL Horizontal_P" + joystickString);
-            moveVertical = Input.GetAxis("JoyStickL Vertical_P" + joystickString);
-        }
-        else
-        {
-            dirHorizontal = rigidbody.velocity.x;
-            dirVertical = rigidbody.velocity.z;
-            moveHorizontal = Input.GetAxis("Horizontal");
-            moveVertical = Input.GetAxis("Vertical");
-        }
-
-        //Store the movement in a vector3. X, Y & Z. We don't move up on the Y axis so set to 0.
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        Vector3 direction = new Vector3(dirHorizontal, 0.0f, dirVertical);
-
-        // store current rotation
-        Quaternion currentRotation = transform.rotation;
-
-        // point object at intended facing direction
-        transform.LookAt(transform.position + direction);
-
-        // lerp from current rotation to intended facing direction
-        transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
-    
-        transform.position += (movement * speed * speedFactor * Time.deltaTime);
-=======
     private void UpdateInactive()
     {
         if (inputType == eInputType.eInputTypeController)
@@ -163,7 +124,6 @@ public class Player : Character
         transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
     
         transform.position += (movement * speed * speedFactor * Time.deltaTime);
->>>>>>> e73de789e4fa0e0e8704550c5a362de4891b28a1
     }
 
     private void Respawn()

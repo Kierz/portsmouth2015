@@ -32,10 +32,20 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
+	public List<GameObject>		backgrounds;
+
     private int                 numActivePlayers;
 
     // singleton!!!
     public static GameManager Singleton() { return gm; }
+
+	// quick accessor functions
+	public float GetWorldTop() { return worldTop; }
+	public float GetWorldBottom() { return worldBottom; }
+	public float GetWorldLeft() { return worldLeft; }
+	public float GetWorldRight() { return worldRight; }
+	public float GetWorldWidth() { return worldWidth; }
+	public float GetWorldHeight() { return worldHeight; }
 
 
 	void Start ()
@@ -63,6 +73,8 @@ public class GameManager : MonoBehaviour
 	void Update ()
     {
         numActivePlayers = GetNumPlayers();
+
+		UpdateBackground();
 
         switch (currentState)
         {
@@ -103,7 +115,7 @@ public class GameManager : MonoBehaviour
             // move player down the screen relative to the game speed
             entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
 
-            if (entity.transform.position.y < GetDestructionLineY())
+            if (entity.transform.position.z < GetDestructionLineZ())
             {
                 DeactivateEntity(entity);
             }
@@ -201,8 +213,21 @@ public class GameManager : MonoBehaviour
         return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f);
     }
 
-    public float GetDestructionLineY()
+    public float GetDestructionLineZ()
     {
         return worldBottom - (worldHeight * 0.5f);
     }
+
+	private void UpdateBackground()
+	{
+		foreach ( GameObject background in backgrounds )
+		{
+			background.transform.Translate( 0.0f, 0.0f, gameSpeed * Time.deltaTime );
+			
+			if ( background.transform.position.z <= GetDestructionLineZ() )
+			{
+				background.transform.position += new Vector3( background.transform.position.x, background.transform.position.y, background.renderer.bounds.extents.y * 2.0f );
+			}
+		}
+	}
 }
