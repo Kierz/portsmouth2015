@@ -19,10 +19,10 @@ public class GameManager : MonoBehaviour
     public Transform            bottomLeftAnchorPoint;
     public Transform            topRightAnchorPoint;
 
-    public float                worldTop, worldBottom;
-    public float                worldLeft, worldRight;
-    public float                worldWidth;
-    public float                worldHeight;
+	private float               worldTop, worldBottom;
+	private float               worldLeft, worldRight;
+	private float               worldWidth;
+	private float               worldHeight;
 
     private float               gameSpeed;      // this is used for the background scrolling speed and the player movement
     private float               countdown;
@@ -32,29 +32,54 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
+	public List<GameObject>		backgrounds;
+
     private int                 numActivePlayers;
 
     // singleton!!!
     public static GameManager Singleton() { return gm; }
 
+	// quick accessor functions
+	public float GetWorldTop() { return worldTop; }
+	public float GetWorldBottom() { return worldBottom; }
+	public float GetWorldLeft() { return worldLeft; }
+	public float GetWorldRight() { return worldRight; }
+	public float GetWorldWidth() { return worldWidth; }
+	public float GetWorldHeight() { return worldHeight; }
+
 
 	void Start ()
     {
+		// setup the singleton! this is vital!
+		// Krz should be shot for forgetting to do this!
+		gm =				this;
+
         // get all players
         players =           FindObjectsOfType<Player>();
         
         //  10 second countdown
-        countdownStart =    10.0f;             
+        countdownStart =    10.0f;
+
+		gameSpeed =			10.0f;
 
         // setup world extents
-        worldTop =          topRightAnchorPoint.position.y;
-        worldBottom =       bottomLeftAnchorPoint.position.y;
+        worldTop =          topRightAnchorPoint.position.z;
+        worldBottom =       bottomLeftAnchorPoint.position.z;
         worldLeft =         bottomLeftAnchorPoint.position.x;
         worldRight =        topRightAnchorPoint.position.x;
 
         // get world dimensions
         worldWidth =        worldRight - worldLeft;
         worldHeight =       worldTop - worldBottom;
+
+		/*
+		print( "world top " + worldTop );
+		print( "world bottom " + worldBottom );
+		print( "world left " + worldLeft );
+		print( "world right " + worldRight );
+		print( "world height " + worldHeight );
+		print( "world width " + worldWidth );
+		*/
 
         // setup the game
 	    ChangeState(eGameState.eGameStateReady);
@@ -63,6 +88,8 @@ public class GameManager : MonoBehaviour
 	void Update ()
     {
         numActivePlayers = GetNumPlayers();
+
+		UpdateBackground();
 
         switch (currentState)
         {
@@ -103,7 +130,7 @@ public class GameManager : MonoBehaviour
             // move player down the screen relative to the game speed
             entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
 
-            if (entity.transform.position.y < GetDestructionLineY())
+            if (entity.transform.position.z < GetDestructionLineZ())
             {
                 DeactivateEntity(entity);
             }
@@ -201,8 +228,21 @@ public class GameManager : MonoBehaviour
         return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f);
     }
 
-    public float GetDestructionLineY()
+    public float GetDestructionLineZ()
     {
-        return worldBottom - (worldHeight * 0.5f);
+        return worldBottom - (worldHeight * 3.0f);
     }
+
+	private void UpdateBackground()
+	{
+		foreach ( GameObject background in backgrounds )
+		{
+			background.transform.position -= new Vector3( 0.0f, 0.0f, gameSpeed * Time.deltaTime );
+			
+			if ( background.transform.position.z <= GetDestructionLineZ() )
+			{
+				background.transform.position += new Vector3( background.transform.position.x, background.transform.position.y, background.renderer.bounds.size.z * 3.0f );
+			}
+		}
+	}
 }

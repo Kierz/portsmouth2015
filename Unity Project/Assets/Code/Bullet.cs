@@ -4,11 +4,12 @@ using System.Collections;
 public class Bullet : MonoBehaviour 
 {
     private float lifeSpanRemaining;
-    private float speed = 0.5f;
+    private float speed;
 
 	void Start ()
     {
-        lifeSpanRemaining = 5.0f;
+        lifeSpanRemaining = 1.0f;
+		speed = 0.75f;
 	}
 	
 	void Update () 
