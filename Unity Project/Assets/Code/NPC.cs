@@ -12,7 +12,7 @@ public class NPC : Character
     {
         isDead = false;
         health = 1;
-        xpos = Random.RandomRange();
+        xpos = Random.Range(((int)GameManager.Singleton().worldTop - (int)GameManager.Singleton().worldLeft), (int)GameManager.Singleton().worldTop);
 	}
 	
     void Update() 
