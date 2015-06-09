@@ -11,7 +11,6 @@ public class NPC : Character
     {
         isDead = false;
         health = 1;
-        xpos = Random.Range(GameManager.Singleton().GetWorldBottomLeft(), GameManager.Singleton().GetWorldTopRight());
         transform.position = new Vector3(xpos, 0.0f, zpos);
 
 	}
@@ -20,11 +19,7 @@ public class NPC : Character
     {
         if (isDead)
         {
-<<<<<<< HEAD
             return;
-=======
-            
->>>>>>> e73de789e4fa0e0e8704550c5a362de4891b28a1
         }
 
 	    if(health <= 0)
