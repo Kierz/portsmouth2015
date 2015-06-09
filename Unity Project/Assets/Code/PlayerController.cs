@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 		//Add the force to the rigid body, depending on the speed.
 		rigidbody.AddForce(movement * speed);
 	}
-	
+
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.tag == "Slow") 
