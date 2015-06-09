@@ -3,11 +3,11 @@ using System.Collections;
 
 public class CameraFollow : MonoBehaviour 
 {
-    private playerController player;
+    private PlayerController player;
 
     void Start()
     {
-        player = FindObjectOfType<playerController>();
+        player = FindObjectOfType<PlayerController>();
     }
 
     void Update ()

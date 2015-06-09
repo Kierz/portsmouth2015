@@ -22,8 +22,13 @@ public class RandomShake : MonoBehaviour
             newPos = Random.insideUnitSphere*0.5f;
         }
 
+
         transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * 30);
         
+
+      
+
+
     }
 }
 	

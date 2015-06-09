@@ -5,17 +5,18 @@
 using UnityEngine;
 using System.Collections;
 
-public class playerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {	
 	private float speed;
     private float rotationSpeed;
 
     void Start()
     {
+
         speed = 100.0f;
         rotationSpeed = 360.0f;         // 360 degrees rotation per second
     }
-	
+
 	void FixedUpdate () 
     {		
 		//Assign and update the movement values. Yo.
@@ -42,11 +43,12 @@ public class playerController : MonoBehaviour
 		rigidbody.AddForce(movement * speed);
 	}
 	
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider col)
 	{
-		if (collision.gameObject.tag == "Slow") 
+		if (col.gameObject.tag == "Slow") 
 		{
-			//Halve speed
+			//Halve the players speed when inside a trigger called slow.
+			speed /= 2;
 		}
 
 		/*if (collision.gameObject.tag == "Kill") 
@@ -59,4 +61,15 @@ public class playerController : MonoBehaviour
 			
 		}*/
 	}
+	
+	void OnTriggerExit(Collider col)
+	{
+		if(col.gameObject.tag == "Slow")
+		{
+			speed *= 2;
+		}
+	}
 }
+
+	
+	
