@@ -7,8 +7,8 @@ using System.Collections;
 
 public class PlayerControllerUPDATED : MonoBehaviour
 {
-    private float speed, rotationSpeed;
-    private float dirHorizontal, dirVertical, moveHorizontal, moveVertical;
+    public float speed, rotationSpeed;
+    private float dirHorizontal, dirVertical, moveHorizontal, moveVertical, invincibilityTime;
     public int joyStick;
 
     public enum InputType { Keyboard, Controller };
@@ -20,6 +20,7 @@ public class PlayerControllerUPDATED : MonoBehaviour
     {
         speed = 100.0f;
         rotationSpeed = 360.0f;         // 360 degrees rotation per second
+        invincibilityTime = 2.0f;
     }
 
     void FixedUpdate()
@@ -94,7 +95,7 @@ public class PlayerControllerUPDATED : MonoBehaviour
         //Add the force to the rigid body, depending on the speed.
         //rigidbody.AddForce(movement * speed);
 
-        transform.Translate(movement);
+        transform.position += (movement * speed * Time.deltaTime);
     }
     
 }
