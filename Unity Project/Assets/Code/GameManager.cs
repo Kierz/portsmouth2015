@@ -114,8 +114,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     private void ChangeState(eGameState state)
     {
         // early out if nothing has changed
@@ -134,7 +132,6 @@ public class GameManager : MonoBehaviour
 
             case eGameState.eGameStateGameOver:
                 countdown = countdownStart;
-
                 break;
         }
     }
