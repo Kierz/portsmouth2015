@@ -30,6 +30,8 @@ public class Player : Character
 
     public int              joystick;               // contains the player ID
     public eInputType       inputType;
+
+	private Renderer		childRenderer;
     
     // -------------------------------------------------------------------------------------------
 
@@ -45,6 +47,7 @@ public class Player : Character
         invincibilityTime =     2.0f;
         speedFactor =           1.0f;
         lives =                 3;
+		childRenderer =			GetComponentInChildren<Renderer>();
 	}
 	
 	void Update () 
