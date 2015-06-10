@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private List<Entity>        inactiveEntities;
 
 	public List<GameObject>		backgrounds;
+	public List<Entity>			entityList;
 
     private int                 numActivePlayers;
 
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviour
         //  10 second countdown
         countdownStart =    10.0f;
 
-		gameSpeed =			10.0f;
+		gameSpeed =			2.0f;
 
         // setup world extents
         worldTop =          topRightAnchorPoint.position.z;
@@ -128,17 +129,30 @@ public class GameManager : MonoBehaviour
 
 		UpdateBackground();
 
+		while ( inactiveEntities.Count + activeEntities.Count < GetDifficultyInEntities() )
+		{
+			// placeholder!
+			ActivateEntity(CreateEntity());
+		}
+
         // update active entities
         foreach (Entity entity in activeEntities)
         {
-            // move player down the screen relative to the game speed
-            entity.transform.Translate(Vector3.forward * -1 * Time.deltaTime);
+            // move entitiy down the screen relative to the game speed
+            entity.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
 
             if (entity.transform.position.z < GetDestructionLineZ())
             {
                 DeactivateEntity(entity);
             }
         }
+
+		// move player down screen
+		foreach ( Player player in players )
+		{
+			// move player down the screen relative to the game speed
+			player.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
+		}
     }
 
     private void UpdateGameOver()
@@ -176,7 +190,9 @@ public class GameManager : MonoBehaviour
 
     private void ResetGame()
     {
-
+		// clear entity lists
+		activeEntities.Clear();
+		inactiveEntities.Clear();
     }
 
     private int GetNumPlayers()
@@ -217,9 +233,22 @@ public class GameManager : MonoBehaviour
         inactiveEntities.Add(entity);
     }
 
-    private void CreateEntity()
+    private Entity CreateEntity()
     {
+		// pick a random entity
+		int random = Random.Range( 0, entityList.Count - 1 );
 
+		// early out if list is empty
+		if ( random == -1 )
+			return null;
+
+		// this is placeholder, real values will be needed
+		Entity entity = Instantiate( entityList[random], GetWorldCentre(), Quaternion.identity ) as Entity;
+
+		// add entity to inactive list
+		inactiveEntities.Add( entity );
+
+		return entity;
     }
 
     private string GetCoundownAsString()
@@ -250,5 +279,12 @@ public class GameManager : MonoBehaviour
 				background.transform.position += new Vector3( background.transform.position.x, background.transform.position.y, background.renderer.bounds.size.z * 3.0f );
 			}
 		}
+	}
+
+	private int GetDifficultyInEntities()
+	{
+		// this is pretty basic right now!
+		// TODO: make this a little more advanced...
+		return numActivePlayers;
 	}
 }
