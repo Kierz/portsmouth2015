@@ -148,14 +148,14 @@ public class Player : Character
         transform.position = GameManager.Singleton().GetWorldCentre();
 
         invincibilityTime = 2.0f;
-        currentState = ePlayerState.ePlayerStateInvincible;
+		SetState(ePlayerState.ePlayerStateInvincible);
     }
     
     private void PlayerDeath()
     {
         if (--lives <= 0)
         {
-            currentState = ePlayerState.ePlayerStateInactive;
+            SetState(ePlayerState.ePlayerStateInactive);
         }
     }
     
