@@ -54,6 +54,10 @@ public class GameManager : MonoBehaviour
 		// Krz should be shot for forgetting to do this!
 		gm =				this;
 
+		// create lists
+		activeEntities =	new List<Entity>();
+		inactiveEntities =	new List<Entity>();
+
         // get all players
         players =           FindObjectsOfType<Player>();
         
@@ -88,9 +92,7 @@ public class GameManager : MonoBehaviour
 	void Update ()
     {
         numActivePlayers = GetNumPlayers();
-
-		UpdateBackground();
-
+		
         switch (currentState)
         {
             case eGameState.eGameStateReady:
@@ -124,6 +126,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+		UpdateBackground();
+
         // update active entities
         foreach (Entity entity in activeEntities)
         {
@@ -147,10 +151,12 @@ public class GameManager : MonoBehaviour
     }
 
     private void ChangeState(eGameState state)
-    {
+   { 
         // early out if nothing has changed
         if (state == currentState)
             return;
+
+		currentState = state;
 
         switch (state)
         {
