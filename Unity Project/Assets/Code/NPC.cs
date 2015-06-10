@@ -1,35 +1,50 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NPC : Character
 {
-    private int health, speed;
+    public int health, speed;
     private float xpos, zpos = 0;
     private bool isDead;
 
-	void Start() 
+    public enum eNPCState
     {
-        isDead = false;
-        health = 1;
-        xpos = Random.Range( GameManager.Singleton().GetWorldLeft(), GameManager.Singleton().GetWorldRight() );
-        transform.position = new Vector3(xpos, 0.0f, zpos);
+        Active,
+        Disabled
+    }
 
-	}
-	
-    void Update() 
+    private eNPCState currentState = eNPCState.Disabled;
+
+    void Start()
     {
-        if (isDead)
-            return;
-
-	    if (health <= 0)
+        if (currentState == eNPCState.Disabled)
         {
-            explode();
-            isDead = true;
+            Respawn();
         }
     }
 
-    void explode()
+    void Update()
+    {
+        if (currentState == eNPCState.Disabled)
+            Start();
+
+        if (health <= 0)
+        {
+            Explode();
+            currentState = eNPCState.Disabled;
+        }
+    }
+
+    void Explode()
     {
 
+    }
+
+    void Respawn()
+    {
+        health = 1;
+        xpos = Random.Range(GameManager.Singleton().GetWorldLeft(), GameManager.Singleton().GetWorldTop());
+        zpos = GameManager.Singleton().GetWorldTop();
+        transform.position = new Vector3(xpos, 0.0f, zpos);
     }
 }
