@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Player : Character 
@@ -20,6 +20,7 @@ public class Player : Character
     // -------------------------------------------------------------------------------------------
 
     private int             lives;
+    private int             score;
     private ePlayerState    currentState;
     
     private float           speed;
@@ -31,9 +32,18 @@ public class Player : Character
     public int              joystick;               // contains the player ID
     public eInputType       inputType;
     
+    public GUIText          guiScore;
+    public GUIText          guiLives;
+    public GUIText          playerNumber;
+    public GUIText          pressStart;
+    
     // -------------------------------------------------------------------------------------------
 
     public ePlayerState GetState() { return currentState; }
+    public int GetLives() { return lives; }
+    public int GetScore() { return score; }
+    public bool IsActive() { return (currentState != ePlayerState.ePlayerStateInactive); }
+
     
     // -------------------------------------------------------------------------------------------
 
@@ -93,10 +103,21 @@ public class Player : Character
 	{
 		string joystickString = joystick.ToString();
 
-		if ( Input.GetKeyDown( KeyCode.Space ) || Input.GetButtonDown( "Fire_P" + joystick.ToString() ) )
+        if (inputType == eInputType.eInputTypeKeyboard)
 		{
-			Fire( transform.position, transform.rotation );
+            if (Input.GetButtonDown("Fire1"))
+			    Fire( transform.position, transform.rotation );
 		}
+
+        else 
+        {
+            if (Input.GetButtonDown("Fire_P" + joystick.ToString()))
+            {
+                // reuse of code is sometimes easier to read
+                // better than a crazy long if statement anyway
+                Fire(transform.position, transform.rotation);
+            }
+        }
 	}
 
     private void Move()
@@ -113,24 +134,32 @@ public class Player : Character
             dirVertical = Input.GetAxis("JoyStickR Vertical_P" + joystickString);
             moveHorizontal = Input.GetAxis("JoyStickL Horizontal_P" + joystickString);
             moveVertical = Input.GetAxis("JoyStickL Vertical_P" + joystickString);
+            
+            Vector3 direction = new Vector3(dirHorizontal, 0.0f, dirVertical);
+
+            // point object at intended facing direction
+            transform.LookAt(transform.position + direction);
         }
         else
         {
-            dirHorizontal = rigidbody.velocity.x;
-            dirVertical = rigidbody.velocity.z;
+            Vector3 mousePos = new Vector3();
+
+            // this is still not exact, but the game wont be played on keyboard much so i dont think this is a priority...
+            // leave until thursday!
+            mousePos.x = Input.mousePosition.x - (Screen.width * 0.5f);
+            mousePos.z = Input.mousePosition.y - (Screen.height * 0.5f);
+
+            transform.LookAt( transform.position + mousePos );
+
             moveHorizontal = Input.GetAxis("Horizontal");
             moveVertical = Input.GetAxis("Vertical");
         }
 
         //Store the movement in a vector3. X, Y & Z. We don't move up on the Y axis so set to 0.
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        Vector3 direction = new Vector3(dirHorizontal, 0.0f, dirVertical);
 
         // store current rotation
         Quaternion currentRotation = transform.rotation;
-
-        // point object at intended facing direction
-        transform.LookAt(transform.position + direction);
 
         // lerp from current rotation to intended facing direction
         transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
@@ -172,6 +201,12 @@ public class Player : Character
         if (col.gameObject.tag == "Kill") 
         {
 			// respawn player if they have enough lives left, if not gameover
+            PlayerDeath();
+        }
+
+        if(col.gameObject.tag == "Bullet")
+        {
+            //Respawn player if hit by a lovely bullet.
             PlayerDeath();
         }
     }
@@ -217,19 +252,29 @@ public class Player : Character
 		{
 			case ePlayerState.ePlayerStateInactive:
 			transform.position = new Vector3( 999, 999, 999 );
-
-
 			break;
 
 			case ePlayerState.ePlayerStateInvincible:
-
 			break;
 
 			case ePlayerState.ePlayerStateNormal:
-
 			break;
 
 		}
 	}
 
+    private void UpdateHUD()
+    {
+        guiLives.guiText.enabled = IsActive();
+        guiScore.guiText.enabled = IsActive();
+        pressStart.guiText.enabled = !IsActive();
+
+        if (IsActive())
+        {
+            guiScore.text = "Score: " + GetScore();
+            guiLives.text = "Lives: " + GetLives();
+            playerNumber.text = "Player " + joystick.ToString();
+            pressStart.text = "Press Start";
+        }
+    }
 }

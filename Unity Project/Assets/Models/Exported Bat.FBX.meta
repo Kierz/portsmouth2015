@@ -14,7 +14,7 @@ ModelImporter:
     400006: LeftWingBone
     400008: RightWingBone
     4300000: Cylinder002
-    7400000: Take 001
+    7400000: Flying
     9500000: //RootNode
     13700000: Cylinder002
   materials:
@@ -34,7 +34,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
+      name: Flying
       takeName: Take 001
       firstFrame: 0
       lastFrame: 20
