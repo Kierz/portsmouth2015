@@ -248,7 +248,7 @@ public class GameManager : MonoBehaviour
 		int random = Random.Range( 0, entityList.Count - 1 );
 
 		// early out if list is empty
-		if ( random == -1 )
+		if ( random == 0 )
 			return null;
 
 		// this is placeholder, real values will be needed
