@@ -9,7 +9,7 @@ public class CreditsScript : MonoBehaviour
 
     void Start()
     {
-        scrollingSpeed = 1.0f;
+        scrollingSpeed = 1.5f;
     }
 
 	void Update ()
