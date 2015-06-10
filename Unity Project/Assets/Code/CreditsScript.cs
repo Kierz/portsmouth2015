@@ -9,7 +9,7 @@ public class CreditsScript : MonoBehaviour
 
     void Start()
     {
-        scrollingSpeed = 2.0f;
+        scrollingSpeed = 3.0f;
     }
 
 	void Update ()
@@ -18,9 +18,9 @@ public class CreditsScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.LoadLevel("MainMenu");
         
-        credits.transform.position -= Vector3.up * Time.deltaTime * scrollingSpeed;
+        credits.transform.position += Vector3.up * Time.deltaTime * scrollingSpeed;
 
-        if (credits.transform.position.y <= stopPoint.transform.position.y)
+        if (credits.transform.position.y >= stopPoint.transform.position.y)
         {
             Application.LoadLevel("MainMenu");
         }
