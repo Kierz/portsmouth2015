@@ -1,168 +1,168 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-public class Player : Character 
+public class Player : Character
 {
-    // -------------------------------------------------------------------------------------------
-    public enum ePlayerState
-    {
-        ePlayerStateNormal,
-        ePlayerStateInactive,
-        ePlayerStateInvincible,
-    };
+	// -------------------------------------------------------------------------------------------
+	public enum ePlayerState
+	{
+		ePlayerStateNormal,
+		ePlayerStateInactive,
+		ePlayerStateInvincible,
+	};
 
-    public enum eInputType 
-    {
-        eInputTypeKeyboard,
-        eInputTypeController
-    };
-    
-    // -------------------------------------------------------------------------------------------
+	public enum eInputType
+	{
+		eInputTypeKeyboard,
+		eInputTypeController
+	};
 
-    private int             lives;
-    private int             score;
-    private ePlayerState    currentState;
-    
-    private float           speed;
-    private float           speedFactor;
-    private float           rotationSpeed;
+	// -------------------------------------------------------------------------------------------
 
-    private float           invincibilityTime;
+	private int             lives;
+	private int             score;
+	private ePlayerState    currentState;
 
-    public int              joystick;               // contains the player ID
-    public eInputType       inputType;
-    
-    public GUIText          guiScore;
-    public GUIText          guiLives;
-    public GUIText          playerNumber;
-    public GUIText          pressStart;
-    
-    // -------------------------------------------------------------------------------------------
+	private float           speed;
+	private float           speedFactor;
+	private float           rotationSpeed;
 
-    public ePlayerState GetState() { return currentState; }
-    public int GetLives() { return lives; }
-    public int GetScore() { return score; }
-    public bool IsActive() { return (currentState != ePlayerState.ePlayerStateInactive); }
+	private float           invincibilityTime;
 
-    
-    // -------------------------------------------------------------------------------------------
+	public int              joystick;               // contains the player ID
+	public eInputType       inputType;
 
-	void Start ()
-    {
-        SetState(		        ePlayerState.ePlayerStateInactive);
-        speed =                 20.0f;
-        rotationSpeed =         360.0f;         // 360 degrees rotation per second
-        invincibilityTime =     2.0f;
-        speedFactor =           1.0f;
-        lives =                 3;
-	}
-	
-	void Update () 
-    {
-        switch (currentState)
-        {
-            case ePlayerState.ePlayerStateInactive:
-                UpdateInactive();
-                break;
+	public GUIText          guiScore;
+	public GUIText          guiLives;
+	public GUIText          playerNumber;
+	public GUIText          pressStart;
 
-            case ePlayerState.ePlayerStateNormal:
-                Move();
-				UpdateFire();
-                break;
+	// -------------------------------------------------------------------------------------------
 
-            case ePlayerState.ePlayerStateInvincible:
-                invincibilityTime -= Time.deltaTime;
+	public ePlayerState GetState() { return currentState; }
+	public int GetLives() { return lives; }
+	public int GetScore() { return score; }
+	public bool IsActive() { return ( currentState != ePlayerState.ePlayerStateInactive ); }
 
-                if (invincibilityTime <= 0)
-                {
-                    SetState(ePlayerState.ePlayerStateNormal);
-                }
 
-                Move();
-				UpdateFire();
-                break;
-        }
+	// -------------------------------------------------------------------------------------------
+
+	void Start()
+	{
+		SetState( ePlayerState.ePlayerStateInactive );
+		speed = 20.0f;
+		rotationSpeed = 360.0f;         // 360 degrees rotation per second
+		invincibilityTime = 2.0f;
+		speedFactor = 1.0f;
+		lives = 3;
 	}
 
-    private void UpdateInactive()
-    {
-        if (inputType == eInputType.eInputTypeController)
-        {
-            //Game waits for player to press start before bat control is authorised
+	void Update()
+	{
+		switch ( currentState )
+		{
+			case ePlayerState.ePlayerStateInactive:
+			UpdateInactive();
+			break;
+
+			case ePlayerState.ePlayerStateNormal:
+			Move();
+			UpdateFire();
+			break;
+
+			case ePlayerState.ePlayerStateInvincible:
+			invincibilityTime -= Time.deltaTime;
+
+			if ( invincibilityTime <= 0 )
+			{
+				SetState( ePlayerState.ePlayerStateNormal );
+			}
+
+			Move();
+			UpdateFire();
+			break;
+		}
+	}
+
+	private void UpdateInactive()
+	{
+		if ( inputType == eInputType.eInputTypeController )
+		{
+			//Game waits for player to press start before bat control is authorised
 			if ( Input.GetButtonDown( "Start_P" + joystick.ToString() ) )
 				Respawn();
-        }
-        else
-        {
-            if (Input.GetButtonDown("Submit"))
+		}
+		else
+		{
+			if ( Input.GetButtonDown( "Submit" ) )
 				Respawn();
-        }
-    }
+		}
+	}
 
 	private void UpdateFire()
 	{
 		string joystickString = joystick.ToString();
 
-        if (inputType == eInputType.eInputTypeKeyboard)
+		if ( inputType == eInputType.eInputTypeKeyboard )
 		{
-            if (Input.GetButtonDown("Fire1"))
-			    Fire( transform.position, transform.rotation );
+			if ( Input.GetButtonDown( "Fire1" ) )
+				Fire( transform.position, transform.rotation );
 		}
 
-        else 
-        {
-            if (Input.GetButtonDown("Fire_P" + joystick.ToString()))
-            {
-                // reuse of code is sometimes easier to read
-                // better than a crazy long if statement anyway
-                Fire(transform.position, transform.rotation);
-            }
-        }
+		else
+		{
+			if ( Input.GetButtonDown( "Fire_P" + joystick.ToString() ) )
+			{
+				// reuse of code is sometimes easier to read
+				// better than a crazy long if statement anyway
+				Fire( transform.position, transform.rotation );
+			}
+		}
 	}
 
-    private void Move()
-    {
-        float dirHorizontal, dirVertical, moveHorizontal, moveVertical;
+	private void Move()
+	{
+		float dirHorizontal, dirVertical, moveHorizontal, moveVertical;
 
-        //Retrieve the joystick number. Then string concatenates the number on the end.
-        //This is so we can split up which controller is being used on input
-        string joystickString = joystick.ToString();
+		//Retrieve the joystick number. Then string concatenates the number on the end.
+		//This is so we can split up which controller is being used on input
+		string joystickString = joystick.ToString();
 
-        if (inputType == eInputType.eInputTypeController)
-        {
-            dirHorizontal = Input.GetAxis("JoyStickR Horizontal_P" + joystickString);
-            dirVertical = Input.GetAxis("JoyStickR Vertical_P" + joystickString);
-            moveHorizontal = Input.GetAxis("JoyStickL Horizontal_P" + joystickString);
-            moveVertical = Input.GetAxis("JoyStickL Vertical_P" + joystickString);
-            
-            Vector3 direction = new Vector3(dirHorizontal, 0.0f, dirVertical);
+		if ( inputType == eInputType.eInputTypeController )
+		{
+			dirHorizontal = Input.GetAxis( "JoyStickR Horizontal_P" + joystickString );
+			dirVertical = Input.GetAxis( "JoyStickR Vertical_P" + joystickString );
+			moveHorizontal = Input.GetAxis( "JoyStickL Horizontal_P" + joystickString );
+			moveVertical = Input.GetAxis( "JoyStickL Vertical_P" + joystickString );
 
-            // point object at intended facing direction
-            transform.LookAt(transform.position + direction);
-        }
-        else
-        {
-            Vector3 mousePos = new Vector3();
+			Vector3 direction = new Vector3( dirHorizontal, 0.0f, dirVertical );
 
-            // this is still not exact, but the game wont be played on keyboard much so i dont think this is a priority...
-            // leave until thursday!
-            mousePos.x = Input.mousePosition.x - (Screen.width * 0.5f);
-            mousePos.z = Input.mousePosition.y - (Screen.height * 0.5f);
+			// point object at intended facing direction
+			transform.LookAt( transform.position + direction );
+		}
+		else
+		{
+			Vector3 mousePos = new Vector3();
 
-            transform.LookAt( transform.position + mousePos );
+			// this is still not exact, but the game wont be played on keyboard much so i dont think this is a priority...
+			// leave until thursday!
+			mousePos.x = Input.mousePosition.x - ( Screen.width * 0.5f );
+			mousePos.z = Input.mousePosition.y - ( Screen.height * 0.5f );
 
-            moveHorizontal = Input.GetAxis("Horizontal");
-            moveVertical = Input.GetAxis("Vertical");
-        }
+			transform.LookAt( transform.position + mousePos );
 
-        //Store the movement in a vector3. X, Y & Z. We don't move up on the Y axis so set to 0.
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+			moveHorizontal = Input.GetAxis( "Horizontal" );
+			moveVertical = Input.GetAxis( "Vertical" );
+		}
 
-        // store current rotation
-        Quaternion currentRotation = transform.rotation;
+		//Store the movement in a vector3. X, Y & Z. We don't move up on the Y axis so set to 0.
+		Vector3 movement = new Vector3( moveHorizontal, 0.0f, moveVertical );
 
-        // lerp from current rotation to intended facing direction
-        transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
+		// store current rotation
+		Quaternion currentRotation = transform.rotation;
+
+		// lerp from current rotation to intended facing direction
+		transform.rotation = Quaternion.RotateTowards( currentRotation, transform.rotation, Time.deltaTime * rotationSpeed );
 
 		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
 
@@ -170,56 +170,56 @@ public class Player : Character
 		{
 			transform.position = newPosition;
 		}
-    }
+	}
 
-    private void Respawn()
-    {
-        transform.position = GameManager.Singleton().GetWorldCentre();
+	private void Respawn()
+	{
+		transform.position = GameManager.Singleton().GetWorldCentre();
 
-        invincibilityTime = 2.0f;
-		SetState(ePlayerState.ePlayerStateInvincible);
-    }
-    
-    private void PlayerDeath()
-    {
-        if (--lives <= 0)
-        {
-            SetState(ePlayerState.ePlayerStateInactive);
-        }
-    }
-    
-    // -------------------------------------------------------------------------------------------
+		invincibilityTime = 2.0f;
+		SetState( ePlayerState.ePlayerStateInvincible );
+	}
 
-    private void OnTriggerEnter(Collider col)
-    {
-        if (col.gameObject.tag == "Slow")
-        {
-            //Halve the players speed when inside a trigger called slow.
-            speedFactor = 0.5f;
-        }
+	private void PlayerDeath()
+	{
+		if ( --lives <= 0 )
+		{
+			SetState( ePlayerState.ePlayerStateInactive );
+		}
+	}
 
-        if (col.gameObject.tag == "Kill") 
-        {
+	// -------------------------------------------------------------------------------------------
+
+	private void OnTriggerEnter( Collider col )
+	{
+		if ( col.gameObject.tag == "Slow" )
+		{
+			//Halve the players speed when inside a trigger called slow.
+			speedFactor = 0.5f;
+		}
+
+		if ( col.gameObject.tag == "Kill" )
+		{
 			// respawn player if they have enough lives left, if not gameover
-            PlayerDeath();
-        }
+			PlayerDeath();
+		}
 
-        if(col.gameObject.tag == "Bullet")
-        {
-            //Respawn player if hit by a lovely bullet.
-            PlayerDeath();
-        }
-    }
+		if ( col.gameObject.tag == "Bullet" )
+		{
+			//Respawn player if hit by a lovely bullet.
+			PlayerDeath();
+		}
+	}
 
-    private void OnTriggerExit(Collider col)
-    {
-        if (col.gameObject.tag == "Slow")
-        {
-            speedFactor = 1.0f;
-        }
-    }
+	private void OnTriggerExit( Collider col )
+	{
+		if ( col.gameObject.tag == "Slow" )
+		{
+			speedFactor = 1.0f;
+		}
+	}
 
-	private bool IsOffScreen(Vector3 position)
+	private bool IsOffScreen( Vector3 position )
 	{
 		/*
 		if ( position.x < GameManager.Singleton().GetWorldLeft() )
@@ -263,18 +263,18 @@ public class Player : Character
 		}
 	}
 
-    private void UpdateHUD()
-    {
-        guiLives.guiText.enabled = IsActive();
-        guiScore.guiText.enabled = IsActive();
-        pressStart.guiText.enabled = !IsActive();
+	private void UpdateHUD()
+	{
+		guiLives.guiText.enabled = IsActive();
+		guiScore.guiText.enabled = IsActive();
+		pressStart.guiText.enabled = !IsActive();
 
-        if (IsActive())
-        {
-            guiScore.text = "Score: " + GetScore();
-            guiLives.text = "Lives: " + GetLives();
-            playerNumber.text = "Player " + joystick.ToString();
-            pressStart.text = "Press Start";
-        }
-    }
+		if ( IsActive() )
+		{
+			guiScore.text = "Score: " + GetScore();
+			guiLives.text = "Lives: " + GetLives();
+			playerNumber.text = "Player " + joystick.ToString();
+			pressStart.text = "Press Start";
+		}
+	}
 }
