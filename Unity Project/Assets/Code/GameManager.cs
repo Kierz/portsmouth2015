@@ -91,6 +91,10 @@ public class GameManager : MonoBehaviour
 
 	void FixedUpdate ()
     {
+        // return to main menu on escape press
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.LoadLevel("MainMenu");
+
         numActivePlayers = GetNumPlayers();
 		
         switch (currentState)
@@ -165,7 +169,7 @@ public class GameManager : MonoBehaviour
         // switch state when countdown reaches zero
         if ((countdown -= Time.deltaTime) < 0)
         {
-            ChangeState(eGameState.eGameStateReady);
+            Application.LoadLevel("MainMenu");
         }
     }
 
