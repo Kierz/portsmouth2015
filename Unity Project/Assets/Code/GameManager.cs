@@ -52,7 +52,6 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
 		// setup the singleton! this is vital!
-		// Krz should be shot for forgetting to do this!
 		gm =				this;
 
 		// create lists
@@ -65,7 +64,7 @@ public class GameManager : MonoBehaviour
         //  10 second countdown
         countdownStart =    10.0f;
 
-		gameSpeed =			2.0f;
+		gameSpeed =			1.0f;
 
         // setup world extents
         worldTop =          topRightAnchorPoint.position.z;
@@ -92,6 +91,10 @@ public class GameManager : MonoBehaviour
 
 	void FixedUpdate ()
     {
+        // return to main menu on escape press
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.LoadLevel("MainMenu");
+
         numActivePlayers = GetNumPlayers();
 		
         switch (currentState)
@@ -136,22 +139,28 @@ public class GameManager : MonoBehaviour
 		}
 
         // update active entities
-        foreach (Entity entity in activeEntities)
+        if (activeEntities.Count > 0)
         {
-            // move entitiy down the screen relative to the game speed
-            entity.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
-
-            if (entity.transform.position.z < GetDestructionLineZ())
+            foreach (Entity entity in activeEntities)
             {
-                DeactivateEntity(entity);
+                // move entitiy down the screen relative to the game speed
+                entity.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
+
+                if (entity.transform.position.z < GetDestructionLineZ())
+                {
+                    DeactivateEntity(entity);
+                }
             }
         }
 
 		// move player down screen
 		foreach ( Player player in players )
 		{
-			// move player down the screen relative to the game speed
-			player.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
+            if (player.GetState() != Player.ePlayerState.ePlayerStateInactive)
+            {
+                // move player down the screen relative to the game speed
+                player.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
+            }
 		}
     }
 
@@ -160,7 +169,7 @@ public class GameManager : MonoBehaviour
         // switch state when countdown reaches zero
         if ((countdown -= Time.deltaTime) < 0)
         {
-            ChangeState(eGameState.eGameStateReady);
+            Application.LoadLevel("MainMenu");
         }
     }
 
@@ -234,13 +243,13 @@ public class GameManager : MonoBehaviour
     }
 
     private Entity CreateEntity()
-    {
+    {        
+		// early out if list is empty
+        if (entityList.Count == 0)
+            return null;
+
 		// pick a random entity
 		int random = Random.Range( 0, entityList.Count - 1 );
-
-		// early out if list is empty
-		if ( random == -1 )
-			return null;
 
 		// this is placeholder, real values will be needed
 		Entity entity = Instantiate( entityList[random], GetWorldCentre(), Quaternion.identity ) as Entity;
