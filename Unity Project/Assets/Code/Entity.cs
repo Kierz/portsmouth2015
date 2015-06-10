@@ -1,15 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Entity : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+public class Entity : MonoBehaviour 
+{
+	// this class is used for tagging and inheritance only
 }

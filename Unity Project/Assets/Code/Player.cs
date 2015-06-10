@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Player : Character 
@@ -39,8 +39,8 @@ public class Player : Character
 
 	void Start ()
     {
-        currentState =          ePlayerState.ePlayerStateInactive;
-        speed =                 32.0f;
+        SetState(		        ePlayerState.ePlayerStateInactive);
+        speed =                 20.0f;
         rotationSpeed =         360.0f;         // 360 degrees rotation per second
         invincibilityTime =     2.0f;
         speedFactor =           1.0f;
@@ -57,6 +57,7 @@ public class Player : Character
 
             case ePlayerState.ePlayerStateNormal:
                 Move();
+				UpdateFire();
                 break;
 
             case ePlayerState.ePlayerStateInvincible:
@@ -64,10 +65,11 @@ public class Player : Character
 
                 if (invincibilityTime <= 0)
                 {
-                    currentState = ePlayerState.ePlayerStateNormal;
+                    SetState(ePlayerState.ePlayerStateNormal);
                 }
 
                 Move();
+				UpdateFire();
                 break;
         }
 	}
@@ -77,15 +79,25 @@ public class Player : Character
         if (inputType == eInputType.eInputTypeController)
         {
             //Game waits for player to press start before bat control is authorised
-            if (Input.GetButtonDown("Start_P" + joystick.ToString()))
-                currentState = ePlayerState.ePlayerStateNormal;
+			if ( Input.GetButtonDown( "Start_P" + joystick.ToString() ) )
+				Respawn();
         }
         else
         {
             if (Input.GetButtonDown("Submit"))
-                currentState = ePlayerState.ePlayerStateNormal;
+				Respawn();
         }
     }
+
+	private void UpdateFire()
+	{
+		string joystickString = joystick.ToString();
+
+		if ( Input.GetKeyDown( KeyCode.Space ) || Input.GetButtonDown( "Fire_P" + joystick.ToString() ) )
+		{
+			Fire( transform.position, transform.rotation );
+		}
+	}
 
     private void Move()
     {
@@ -125,7 +137,7 @@ public class Player : Character
 
 		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
 
-		if ( !IsOffScreen( newPosition ) )
+		//if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
 		{
 			transform.position = newPosition;
 		}
@@ -136,14 +148,14 @@ public class Player : Character
         transform.position = GameManager.Singleton().GetWorldCentre();
 
         invincibilityTime = 2.0f;
-        currentState = ePlayerState.ePlayerStateInvincible;
+		SetState(ePlayerState.ePlayerStateInvincible);
     }
     
     private void PlayerDeath()
     {
         if (--lives <= 0)
         {
-            currentState = ePlayerState.ePlayerStateInactive;
+            SetState(ePlayerState.ePlayerStateInactive);
         }
     }
     
@@ -159,6 +171,7 @@ public class Player : Character
 
         if (col.gameObject.tag == "Kill") 
         {
+			// respawn player if they have enough lives left, if not gameover
             PlayerDeath();
         }
     }
@@ -173,6 +186,7 @@ public class Player : Character
 
 	private bool IsOffScreen(Vector3 position)
 	{
+		/*
 		if ( position.x < GameManager.Singleton().GetWorldLeft() )
 			return true;
 
@@ -184,7 +198,38 @@ public class Player : Character
 
 		if ( position.z < GameManager.Singleton().GetWorldBottom() )
 			return true;
-		
+		*/
+
+		// this was awfull do not use it.. feel free to recode this =]
+
 		return false;
 	}
+
+	private void SetState( ePlayerState state )
+	{
+		// early out if no change
+		if ( currentState == state )
+			return;
+
+		currentState = state;
+
+		switch ( state )
+		{
+			case ePlayerState.ePlayerStateInactive:
+			transform.position = new Vector3( 999, 999, 999 );
+
+
+			break;
+
+			case ePlayerState.ePlayerStateInvincible:
+
+			break;
+
+			case ePlayerState.ePlayerStateNormal:
+
+			break;
+
+		}
+	}
+
 }
