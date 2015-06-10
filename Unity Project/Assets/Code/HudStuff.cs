@@ -23,7 +23,7 @@ public class HudStuff : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        guiScore.text = "Score: " + Player.GetScore();
+        guiScore.text = "Score: " + player.GetScore();
 	}
 
    
