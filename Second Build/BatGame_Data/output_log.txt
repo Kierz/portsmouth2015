@@ -10,7 +10,7 @@ Platform assembly: E:\GameJam\Second Build\BatGame_Data\Managed\UnityEngine.dll 
 Loading E:\GameJam\Second Build\BatGame_Data\Managed\UnityEngine.dll into Unity Child Domain
 Platform assembly: E:\GameJam\Second Build\BatGame_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading E:\GameJam\Second Build\BatGame_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-- Completed reload, in  0.148 seconds
+- Completed reload, in  0.117 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -18,7 +18,7 @@ InvalidOperationException: Collection was modified; enumeration operation may no
   at System.Collections.Generic.List`1+Enumerator[Entity].VerifyState () [0x00000] in <filename unknown>:0 
   at System.Collections.Generic.List`1+Enumerator[Entity].MoveNext () [0x00000] in <filename unknown>:0 
   at GameManager.UpdateActive () [0x00000] in <filename unknown>:0 
-  at GameManager.Update () [0x00000] in <filename unknown>:0 
+  at GameManager.FixedUpdate () [0x00000] in <filename unknown>:0 
  
 (Filename:  Line: -1)
 

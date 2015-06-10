@@ -10,7 +10,7 @@ Platform assembly: E:\GameJam\First Build\BatGame_Data\Managed\UnityEngine.dll (
 Loading E:\GameJam\First Build\BatGame_Data\Managed\UnityEngine.dll into Unity Child Domain
 Platform assembly: E:\GameJam\First Build\BatGame_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading E:\GameJam\First Build\BatGame_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-- Completed reload, in  0.939 seconds
+- Completed reload, in  0.119 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.

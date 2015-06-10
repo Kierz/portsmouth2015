@@ -13,33 +13,38 @@ public class NPC : Character
         Disabled
     }
 
-    private eNPCState currentState;
+    private eNPCState currentState = eNPCState.Disabled;
 
     void Start()
     {
-        if (currentState == eNPCState.Active)
+        if (currentState == eNPCState.Disabled)
         {
-            isDead = false;
-            health = 1;
-            //xpos = Random.Range(left, right);
-            transform.position = new Vector3(xpos, 0.0f, zpos);
+            Respawn();
         }
     }
 
     void Update()
     {
-        if (isDead)
-            return;
+        if (currentState == eNPCState.Disabled)
+            Start();
 
         if (health <= 0)
         {
-            explode();
-            isDead = true;
+            Explode();
+            currentState = eNPCState.Disabled;
         }
     }
 
-    void explode()
+    void Explode()
     {
 
+    }
+
+    void Respawn()
+    {
+        health = 1;
+        xpos = Random.Range(GameManager.Singleton().GetWorldLeft(), GameManager.Singleton().GetWorldTop());
+        zpos = GameManager.Singleton().GetWorldTop();
+        transform.position = new Vector3(xpos, 0.0f, zpos);
     }
 }

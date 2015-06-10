@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 	    ChangeState(eGameState.eGameStateReady);
 	}	
 
-	void Update ()
+	void FixedUpdate ()
     {
         numActivePlayers = GetNumPlayers();
 		
