@@ -174,6 +174,12 @@ public class Player : Character
 			// respawn player if they have enough lives left, if not gameover
             PlayerDeath();
         }
+
+        if(col.gameObject.tag == "Bullet")
+        {
+            //Respawn player if hit by a lovely bullet.
+            PlayerDeath();
+        }
     }
 
     private void OnTriggerExit(Collider col)

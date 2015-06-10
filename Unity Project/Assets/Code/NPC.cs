@@ -7,8 +7,9 @@ using System.Collections;
 
 public class NPC : Character
 {
-    public int health, speed;
-    private float xpos, zpos = 0;
+    //Speed will be used for custom movement, not used currently.
+    public int health, speed = 0;
+    private float xpos, zpos, ypos = 0;
     protected float deltaTime = 0;
 
     public enum eNPCState
@@ -29,13 +30,22 @@ public class NPC : Character
 
      void Start()
     {
-
+        gameObject.tag = "Enemy";
     }
 
     protected void Update()
     {
         if (currentState == eNPCState.Disabled)
-            Spawn();
+        {
+            int wait = Random.Range(2, 8);
+            deltaTime += Time.deltaTime;
+            if (deltaTime >= wait)
+            {
+                deltaTime = 0;
+                Spawn();
+            }
+        }
+            
 
         if (health <= 0)
         {
@@ -50,7 +60,7 @@ public class NPC : Character
 
     protected void Explode()
     {
-        print("EXPLOSION OCCURED!");
+        ypos = Random.Range(10, 15);
         currentState = eNPCState.Disabled;
     }
 
@@ -58,8 +68,9 @@ public class NPC : Character
     {
         health = 1;
         xpos = Random.Range(GameManager.Singleton().GetWorldLeft(), GameManager.Singleton().GetWorldTop());
+        ypos = GameManager.Singleton().GetWorldHeight() - GameManager.Singleton().GetWorldTop();
         zpos = GameManager.Singleton().GetWorldTop();
-        transform.position = new Vector3(xpos, 0.0f, zpos);
+        transform.position = new Vector3(xpos, ypos, zpos);
         currentState = eNPCState.Active;
     }
 
