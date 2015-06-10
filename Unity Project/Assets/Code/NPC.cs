@@ -3,19 +3,27 @@ using System.Collections;
 
 public class NPC : Character
 {
-    private int health, speed;
+    public int health, speed;
     private float xpos, zpos = 0;
     private bool isDead;
 
+    public enum eNPCState
+    {
+        Active,
+        Disabled
+    }
+
+    private eNPCState currentState;
+
     void Start()
     {
-        float left = GameManager.Singleton().GetWorldLeft();
-        float right = GameManager.Singleton().GetWorldRight();
-        isDead = false;
-        health = 1;
-        xpos = Random.Range(left, right);
-        transform.position = new Vector3(xpos, 0.0f, zpos);
-
+        if (currentState == eNPCState.Active)
+        {
+            isDead = false;
+            health = 1;
+            //xpos = Random.Range(left, right);
+            transform.position = new Vector3(xpos, 0.0f, zpos);
+        }
     }
 
     void Update()

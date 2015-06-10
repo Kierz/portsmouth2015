@@ -1,0 +1,24 @@
+Initialize engine version: 4.5.0f6 (fd4616464986)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon HD 7640G (ID=0x9903)
+    Vendor:   ATI
+    VRAM:     735 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: E:\GameJam\Second Build\BatGame_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\GameJam\Second Build\BatGame_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\GameJam\Second Build\BatGame_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\GameJam\Second Build\BatGame_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.148 seconds
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+InvalidOperationException: Collection was modified; enumeration operation may not execute.
+  at System.Collections.Generic.List`1+Enumerator[Entity].VerifyState () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.List`1+Enumerator[Entity].MoveNext () [0x00000] in <filename unknown>:0 
+  at GameManager.UpdateActive () [0x00000] in <filename unknown>:0 
+  at GameManager.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
