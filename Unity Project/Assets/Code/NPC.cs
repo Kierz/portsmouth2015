@@ -17,9 +17,17 @@ public class NPC : Character
         Disabled
     }
 
-    private eNPCState currentState = eNPCState.Disabled;
+    public enum eEnemyType
+    {
+        Default,
+        Pigeon,
+        Crow
+    }
 
-    protected void Start()
+    private eNPCState currentState = eNPCState.Disabled;
+    private eEnemyType currentEnemy = eEnemyType.Default;
+
+     void Start()
     {
 
     }
@@ -57,6 +65,18 @@ public class NPC : Character
 
     void Movement()
     {
+        switch(currentEnemy)
+        {
+            case eEnemyType.Default:
+                print("Default movement");
+                break;
+            case eEnemyType.Pigeon:
+                print("Pigeon movement");
+                break;
+            case eEnemyType.Crow:
+                print("Crow momento!");
+                break;
+        }
 
     }
 
@@ -78,7 +98,21 @@ public class NPC : Character
         {
             //Fire the projectile
             //Fire(); <- this would be used to customise specific firing patterns. but for now use generic.
-            Fire(transform.position, transform.rotation);
+
+            switch(currentEnemy)
+            {
+                case eEnemyType.Default:
+                    Fire(transform.position, transform.rotation);
+                    break;
+                case eEnemyType.Pigeon:
+                    Fire(transform.position, transform.rotation);
+                    break;
+                case eEnemyType.Crow:
+                    Fire(transform.position, transform.rotation);
+                    break;
+            }
+
+           // Fire(transform.position, transform.rotation);
             //Then reset deltaTime otherwise our bird friend will fire.
             deltaTime = 0;
         }
