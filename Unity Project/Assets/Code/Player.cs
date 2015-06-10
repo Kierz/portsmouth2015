@@ -20,6 +20,7 @@ public class Player : Character
     // -------------------------------------------------------------------------------------------
 
     private int             lives;
+    private int             score;
     private ePlayerState    currentState;
     
     private float           speed;
@@ -34,6 +35,10 @@ public class Player : Character
     // -------------------------------------------------------------------------------------------
 
     public ePlayerState GetState() { return currentState; }
+    public int GetLives() { return lives; }
+    public int GetScore() { return score; }
+    public bool IsActive() { return (currentState != ePlayerState.ePlayerStateInactive); }
+
     
     // -------------------------------------------------------------------------------------------
 
