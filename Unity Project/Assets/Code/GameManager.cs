@@ -243,13 +243,13 @@ public class GameManager : MonoBehaviour
     }
 
     private Entity CreateEntity()
-    {
+    {        
+		// early out if list is empty
+        if (entityList.Count == 0)
+            return null;
+
 		// pick a random entity
 		int random = Random.Range( 0, entityList.Count - 1 );
-
-		// early out if list is empty
-		if ( random == -1 )
-			return null;
 
 		// this is placeholder, real values will be needed
 		Entity entity = Instantiate( entityList[random], GetWorldCentre(), Quaternion.identity ) as Entity;
