@@ -32,6 +32,11 @@ public class Player : Character
     public int              joystick;               // contains the player ID
     public eInputType       inputType;
     
+    public GUIText          guiScore;
+    public GUIText          guiLives;
+    public GUIText          playerNumber;
+    public GUIText          pressStart;
+    
     // -------------------------------------------------------------------------------------------
 
     public ePlayerState GetState() { return currentState; }
@@ -156,7 +161,6 @@ public class Player : Character
         // store current rotation
         Quaternion currentRotation = transform.rotation;
 
-
         // lerp from current rotation to intended facing direction
         transform.rotation = Quaternion.RotateTowards(currentRotation, transform.rotation, Time.deltaTime * rotationSpeed);
 
@@ -248,19 +252,29 @@ public class Player : Character
 		{
 			case ePlayerState.ePlayerStateInactive:
 			transform.position = new Vector3( 999, 999, 999 );
-
-
 			break;
 
 			case ePlayerState.ePlayerStateInvincible:
-
 			break;
 
 			case ePlayerState.ePlayerStateNormal:
-
 			break;
 
 		}
 	}
 
+    private void UpdateHUD()
+    {
+        guiLives.guiText.enabled = IsActive();
+        guiScore.guiText.enabled = IsActive();
+        pressStart.guiText.enabled = !IsActive();
+
+        if (IsActive())
+        {
+            guiScore.text = "Score: " + GetScore();
+            guiLives.text = "Lives: " + GetLives();
+            playerNumber.text = "Player " + joystick.ToString();
+            pressStart.text = "Press Start";
+        }
+    }
 }
