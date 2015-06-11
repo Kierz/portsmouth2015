@@ -212,8 +212,32 @@ public class Player : Character
 		// lerp from current rotation to intended facing direction
 		transform.rotation = Quaternion.RotateTowards( currentRotation, transform.rotation, Time.deltaTime * rotationSpeed );
 
+
+		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
+
+
+		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
+
+		if ( !IsOffScreen( newPosition ) )
+
+		{
+			transform.position = newPosition;
+		}*/
+
+
+        // X axis
+        if (transform.position.x <= -3.6f)
+        {
+            transform.position = new Vector3(-3.6f, transform.position.y,transform.position.z);
+        }
+        else if (transform.position.x >= 3.6f)
+        {
+            transform.position = new Vector3(3.6f, transform.position.y,transform.position.z);
+        }
+
         // update position
         transform.position = transform.position + (movement * speed * speedFactor * Time.deltaTime);
+
 	}
 
 	private void Respawn()
