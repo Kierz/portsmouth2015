@@ -1,16 +1,17 @@
-//NPC.cs
-//10.06.15
-//Last edited by James Davidson & Matthew Moore
-
+/*          File:       NPC.cs
+            Project:    RaType
+            Authors:    James Davidson
+                        Matt Moore
+            Purpose:    Game made for Portsmouh Game Jam 2015
+ */
 using UnityEngine;
 using System.Collections;
 
 public class NPC : Character
 {
-    //Speed will be used for custom movement, not used currently.
-    public int health, speed = 0;
-    private float xpos, zpos, ypos = 0;
-    protected float deltaTime = 0;
+    // ---------------------------------
+    // ------------- ENUMS -------------
+    // ---------------------------------
 
     public enum eNPCState
     {
@@ -25,12 +26,35 @@ public class NPC : Character
         Crow
     }
 
-    private eNPCState currentState = eNPCState.Disabled;
-    private eEnemyType currentEnemy = eEnemyType.Default;
+    // -------------------------------------
+    // ------------- VARIABLES -------------
+    // -------------------------------------
 
-     void Start()
+    public int                      health;
+    public int                      speed;              //Speed will be used for custom movement, not used currently.
+    public int                      scoreValue;         // score given to player when destroyed
+
+    private eNPCState               currentState;
+    private eEnemyType              currentEnemy;
+    private float                   xpos, zpos, ypos;
+    protected float                 deltaTime;
+    protected float                 creationZone;       // ypos of the creation zone
+    
+    // ------------------------------------------
+    // ------------- NPC FUNCTIONS  -------------
+    // ------------------------------------------
+
+    void Start()
     {
-        gameObject.tag = "Enemy";
+        gameObject.tag =   "Enemy";
+        speed =            0;
+        xpos =             0;
+        ypos =             0;
+        zpos =             0;
+        deltaTime =        0;
+        currentState =     eNPCState.Disabled;
+        currentEnemy =     eEnemyType.Default;
+        creationZone =     GameManager.Singleton().GetCreationZone();
     }
 
     protected void Update()
@@ -44,13 +68,13 @@ public class NPC : Character
                 deltaTime = 0;
                 Spawn();
             }
-        }
-            
+        }            
 
         if (health <= 0)
         {
             Explode();
         }
+
         if(health > 0)
         {
             Movement();
@@ -60,7 +84,7 @@ public class NPC : Character
 
     protected void Explode()
     {
-        ypos = Random.Range(10, 15);
+        ypos = Random.Range(creationZone, creationZone + GameManager.Singleton().GetWorldHeight());
         currentState = eNPCState.Disabled;
     }
 
@@ -96,8 +120,17 @@ public class NPC : Character
         //If it's a bullet we hit, deduct ONE POINT FROM GRYFINDO- Health. Yes. That.
         if(col.gameObject.tag == "Bullet")
         {
-            health -= 1;
-            //Polish needed, add some fancy GFX.
+            Bullet bullet = col.GetComponent<Bullet>();
+
+            // only respond to bullets fired by the player
+            if (bullet.didPlayerFireMe)
+            {
+                health -= 1;
+                //Polish needed, add some fancy GFX.
+                
+                // give player who shot it a score
+                bullet.playerWhoFiredMe.AddScore(scoreValue);
+            }
         }
     }
 
@@ -114,12 +147,15 @@ public class NPC : Character
             {
                 case eEnemyType.Default:
                     Fire(transform.position, transform.rotation);
+                    SoundManager.EnemyFire(transform.position);
                     break;
                 case eEnemyType.Pigeon:
                     Fire(transform.position, transform.rotation);
+                    SoundManager.PidgeonSound(transform.position);
                     break;
                 case eEnemyType.Crow:
                     Fire(transform.position, transform.rotation);
+                    SoundManager.CrowSound(transform.position);
                     break;
             }
 
@@ -127,12 +163,5 @@ public class NPC : Character
             //Then reset deltaTime otherwise our bird friend will fire.
             deltaTime = 0;
         }
-
     }
-
-    //Unused method for now, consider in polishing time.
-    //protected void Fire()
-    //{
-
-    //}
 }
