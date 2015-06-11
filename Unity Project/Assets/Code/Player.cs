@@ -208,11 +208,11 @@ public class Player : Character
 
 		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
 
-<<<<<<< HEAD
+
 		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
-=======
+
 		if ( !IsOffScreen( newPosition ) )
->>>>>>> e660e621c201cafdfed59fe78eaba5260e8be4b6
+
 		{
 			transform.position = newPosition;
 		}*/
