@@ -130,6 +130,7 @@ public class Player : Character
 			//Game waits for player to press start before bat control is authorised
             if ( Input.GetButtonDown("Start_P" + joystick.ToString() ) )
             {
+                lives = 3;
                 Respawn();
             }
 		}
@@ -138,6 +139,7 @@ public class Player : Character
 		{
 			if ( Input.GetButtonDown( "Submit" ) )
             {
+                lives = 3;
 				Respawn();
             }
 		}
@@ -147,8 +149,11 @@ public class Player : Character
 	{
 		if ( inputType == eInputType.eInputTypeKeyboard )
 		{
-			if ( Input.GetButtonDown( "Fire1" ) )
-				Fire( transform.position, transform.rotation );
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Fire(transform.position, transform.rotation);
+                SoundManager.PlayerFire(transform.position);
+            }
 		}
 
 		else
@@ -158,6 +163,7 @@ public class Player : Character
 				// reuse of code is sometimes easier to read
 				// better than a crazy long if statement anyway
 				Fire( transform.position, transform.rotation );
+                SoundManager.PlayerFire(transform.position);
 			}
 		}
 	}
@@ -244,6 +250,8 @@ public class Player : Character
 
 	private void PlayerDeath()
 	{
+        SoundManager.PlayerDeath(transform.position);
+
 		if ( --lives <= 0 )
 		{
 			SetState( ePlayerState.ePlayerStateInactive );
