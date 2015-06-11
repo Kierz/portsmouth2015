@@ -62,7 +62,7 @@ public class NPC : Character
 
     protected void Update()
     {
-        if (currentState == eNPCState.Disabled)
+       /* if (currentState == eNPCState.Disabled)
         {
             int wait = Random.Range(2, 8);
             deltaTime += Time.deltaTime;
@@ -71,7 +71,7 @@ public class NPC : Character
                 deltaTime = 0;
                 Spawn();
             }
-        }            
+        }  */          
 
         if (health <= 0)
         {
