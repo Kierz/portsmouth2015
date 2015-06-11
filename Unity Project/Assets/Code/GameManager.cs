@@ -1,20 +1,31 @@
-﻿using UnityEngine;
+﻿/*          File:       GameManager.cs
+            Project:    RaType
+            Author:     Kierz Phillips
+            Purpose:    Game made for Portsmouh Game Jam 2015
+ */
+
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
-    // -------------------------------------
-    // ------------- VARIABLES -------------
-    // -------------------------------------
- 
+    // ---------------------------------
+    // ------------- ENUMS -------------
+    // ---------------------------------
+
     public enum eGameState
     {
         eGameStateReady,
         eGameStateActive,
         eGameStateGameOver
     };
-    
+
+    // -------------------------------------
+    // ------------- VARIABLES -------------
+    // -------------------------------------
+ 
     private eGameState          currentState;
     
     // these are used to calculate the game world dimensions

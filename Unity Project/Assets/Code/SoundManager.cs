@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/*          File:       SoundManager.cs
+            Project:    RaType
+            Author:     Kierz Phillips
+            Purpose:    Game made for Portsmouh Game Jam 2015
+ */
+
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

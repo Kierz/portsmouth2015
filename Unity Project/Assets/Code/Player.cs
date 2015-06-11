@@ -1,9 +1,22 @@
-﻿using UnityEngine;
+﻿/*          File:       Player.cs
+            Project:    RaType
+            Authors:    Kierz Phillips
+                        James Davidson
+                        Matt Moore
+                        Phil Alassad
+            Purpose:    Game made for Portsmouh Game Jam 2015
+ */
+
+
+using UnityEngine;
 using System.Collections;
 
 public class Player : Character
 {
-	// -------------------------------------------------------------------------------------------
+    // ---------------------------------
+    // ------------- ENUMS -------------
+    // ---------------------------------
+ 
 	public enum ePlayerState
 	{
 		ePlayerStateNormal,
@@ -16,10 +29,12 @@ public class Player : Character
 		eInputTypeKeyboard,
 		eInputTypeController
 	};
-
-	// -------------------------------------------------------------------------------------------
-
-	private int             lives;
+    
+    // -------------------------------------
+    // ------------- VARIABLES -------------
+    // -------------------------------------
+     
+    private int             lives;
 	private int             score;
 	private ePlayerState    currentState;
 
@@ -37,24 +52,28 @@ public class Player : Character
 	public GUIText          playerNumber;
 	public GUIText          pressStart;
 
-	// -------------------------------------------------------------------------------------------
+    // ---------------------------------------------
+    // ------------- ACCESSOR FUNCTIONS ------------
+    // ---------------------------------------------
 
 	public ePlayerState GetState() { return currentState; }
 	public int GetLives() { return lives; }
 	public int GetScore() { return score; }
 	public bool IsActive() { return ( currentState != ePlayerState.ePlayerStateInactive ); }
-
-
-	// -------------------------------------------------------------------------------------------
+    public void AddScore(int value) { score += value; }
+    
+    // -------------------------------------------
+    // ------------- PLAYER FUNCTIONS ------------
+    // -------------------------------------------
 
 	void Start()
 	{
-		SetState( ePlayerState.ePlayerStateInactive );
-		speed = 20.0f;
-		rotationSpeed = 360.0f;         // 360 degrees rotation per second
-		invincibilityTime = 2.0f;
-		speedFactor = 1.0f;
-		lives = 3;
+		SetState                    ( ePlayerState.ePlayerStateInactive );
+		speed =                     20.0f;
+		rotationSpeed =             360.0f;         // 360 degrees rotation per second
+		invincibilityTime =         2.0f;
+		speedFactor =               1.0f;
+		lives =                     3;
 	}
 
 	void Update()
@@ -188,7 +207,69 @@ public class Player : Character
 		}
 	}
 
-	// -------------------------------------------------------------------------------------------
+    private bool IsOffScreen(Vector3 position)
+    {
+        /*
+        if ( position.x < GameManager.Singleton().GetWorldLeft() )
+            return true;
+
+        if ( position.x > GameManager.Singleton().GetWorldRight() )
+            return true;
+
+        if ( position.z > GameManager.Singleton().GetWorldTop() )
+            return true;
+
+        if ( position.z < GameManager.Singleton().GetWorldBottom() )
+            return true;
+        */
+
+        // this was awfull do not use it.. feel free to recode this =]
+
+        return false;
+    }
+
+    private void SetState(ePlayerState state)
+    {
+        // early out if no change
+        if (currentState == state)
+            return;
+
+        currentState = state;
+
+        switch (state)
+        {
+            case ePlayerState.ePlayerStateInactive:
+                transform.position = new Vector3(999, 999, 999);
+                break;
+
+            case ePlayerState.ePlayerStateInvincible:
+                break;
+
+            case ePlayerState.ePlayerStateNormal:
+                break;
+
+        }
+    }
+
+    private void UpdateHUD()
+    {
+        guiLives.guiText.enabled = IsActive();
+        guiScore.guiText.enabled = IsActive();
+        pressStart.guiText.enabled = !IsActive();
+
+        if (IsActive())
+        {
+            guiScore.text = "Score: " + GetScore();
+            guiLives.text = "Lives: " + GetLives();
+            playerNumber.text = "Player " + joystick.ToString();
+            pressStart.text = "Press Start";
+        }
+    }
+
+    
+    // --------------------------------------------
+    // ------------- TRIGGER FUNCTIONS ------------
+    // --------------------------------------------
 
 	private void OnTriggerEnter( Collider col )
 	{
@@ -216,65 +297,6 @@ public class Player : Character
 		if ( col.gameObject.tag == "Slow" )
 		{
 			speedFactor = 1.0f;
-		}
-	}
-
-	private bool IsOffScreen( Vector3 position )
-	{
-		/*
-		if ( position.x < GameManager.Singleton().GetWorldLeft() )
-			return true;
-
-		if ( position.x > GameManager.Singleton().GetWorldRight() )
-			return true;
-
-		if ( position.z > GameManager.Singleton().GetWorldTop() )
-			return true;
-
-		if ( position.z < GameManager.Singleton().GetWorldBottom() )
-			return true;
-		*/
-
-		// this was awfull do not use it.. feel free to recode this =]
-
-		return false;
-	}
-
-	private void SetState( ePlayerState state )
-	{
-		// early out if no change
-		if ( currentState == state )
-			return;
-
-		currentState = state;
-
-		switch ( state )
-		{
-			case ePlayerState.ePlayerStateInactive:
-			transform.position = new Vector3( 999, 999, 999 );
-			break;
-
-			case ePlayerState.ePlayerStateInvincible:
-			break;
-
-			case ePlayerState.ePlayerStateNormal:
-			break;
-
-		}
-	}
-
-	private void UpdateHUD()
-	{
-		guiLives.guiText.enabled = IsActive();
-		guiScore.guiText.enabled = IsActive();
-		pressStart.guiText.enabled = !IsActive();
-
-		if ( IsActive() )
-		{
-			guiScore.text = "Score: " + GetScore();
-			guiLives.text = "Lives: " + GetLives();
-			playerNumber.text = "Player " + joystick.ToString();
-			pressStart.text = "Press Start";
 		}
 	}
 }
