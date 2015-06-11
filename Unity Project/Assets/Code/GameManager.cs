@@ -238,6 +238,12 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameOver()
     {
+        if (numActivePlayers > 0)
+        {
+            ChangeState(eGameState.eGameStateActive);
+            return;
+        }
+
         gameoverDisplay.enabled = true;
         countdownDisplay.enabled = true;
 
@@ -329,9 +335,11 @@ public class GameManager : MonoBehaviour
                 
         // respawn entity
         entity.transform.position = GetSpawnLocation();
+
+        entity.npcActive = true;
     }
 
-    private void DeactivateEntity(Entity entity)
+    public void DeactivateEntity(Entity entity)
     {
         // early out if already inactive
         if (inactiveEntities.Contains(entity))
@@ -339,6 +347,11 @@ public class GameManager : MonoBehaviour
 
         activeEntities.Remove(entity);
         inactiveEntities.Add(entity);
+
+        // respawn entity
+        entity.transform.position = GetSpawnLocation();
+
+        entity.npcActive = false;
     }
 
     private Entity CreateEntity()
