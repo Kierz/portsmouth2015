@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
+	private float				delayBeforeEntitySpawn;				// this var holds the counting down time
+	private const float			delayBeforeEntitySpawnTime = 0.25f;	// this var holds the number which the other uses when reset
+
 	public List<GameObject>		backgrounds;
 	public List<Entity>			entityList;
 
@@ -57,7 +60,7 @@ public class GameManager : MonoBehaviour
 		// create lists
 		activeEntities =	new List<Entity>();
 		inactiveEntities =	new List<Entity>();
-
+		
         // get all players
         players =           FindObjectsOfType<Player>();
         
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
 
         // setup the game
 	    ChangeState(eGameState.eGameStateReady);
+		delayBeforeEntitySpawn = 0.3f;
 	}	
 
 	void FixedUpdate ()
@@ -133,13 +137,18 @@ public class GameManager : MonoBehaviour
 		UpdateBackground();
 
 		if ( inactiveEntities.Count + activeEntities.Count < GetDifficultyInEntities() )
-		{
-			CreateEntity();
+		{			CreateEntity();
 		}
 
 		if ( activeEntities.Count < GetDifficultyInEntities() )
 		{
-			ActivateEntity();
+			delayBeforeEntitySpawn -= Time.deltaTime;
+
+			if ( delayBeforeEntitySpawn <= 0.0f )
+			{
+				ActivateEntity();
+				delayBeforeEntitySpawn = delayBeforeEntitySpawnTime;
+			}
 		}
 
         // update active entities
