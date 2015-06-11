@@ -25,7 +25,7 @@ public class Character : Entity
  
 	public Bullet               bullet;
     public eCharacterType       type;
-
+    
     // ---------------------------------------------
     // ------------- CHAACTER FUNCTIONS ------------
     // ---------------------------------------------

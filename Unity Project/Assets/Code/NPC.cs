@@ -37,8 +37,11 @@ public class NPC : Character
     private eNPCState               currentState;
     private eEnemyType              currentEnemy;
     private float                   xpos, zpos, ypos;
-    protected float                 deltaTime;
     protected float                 creationZone;       // ypos of the creation zone
+
+    public float                    fireDelay;
+    private float                   delayBeforeFiring;
+
     
     // ------------------------------------------
     // ------------- NPC FUNCTIONS  -------------
@@ -51,10 +54,10 @@ public class NPC : Character
         xpos =             0;
         ypos =             0;
         zpos =             0;
-        deltaTime =        0;
         currentState =     eNPCState.Disabled;
         currentEnemy =     eEnemyType.Default;
         creationZone =     GameManager.Singleton().GetCreationZone();
+        delayBeforeFiring = 0;
     }
 
     protected void Update()
@@ -136,9 +139,9 @@ public class NPC : Character
 
     protected void Shoot()
     {
-        int wait = Random.Range(2, 8);
-        deltaTime += Time.deltaTime;
-        if(deltaTime >= wait)
+        delayBeforeFiring -= Time.deltaTime;
+
+        if (delayBeforeFiring <= 0.0f)
         {
             //Fire the projectile
             //Fire(); <- this would be used to customise specific firing patterns. but for now use generic.
@@ -159,9 +162,8 @@ public class NPC : Character
                     break;
             }
 
-           // Fire(transform.position, transform.rotation);
-            //Then reset deltaTime otherwise our bird friend will fire.
-            deltaTime = 0;
+            // reset timer
+            delayBeforeFiring = fireDelay;
         }
     }
 }
