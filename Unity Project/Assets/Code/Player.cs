@@ -51,7 +51,7 @@ public class Player : Character
 	public GUIText          guiScore;
 	public GUIText          playerNumber;
 	public GUIText          pressStart;
-    public List<SpriteRenderer> lifeSprites;
+    public List<GUITexture> lifeSprites;
 
     private float           blinkDelay;
     private float           blinkDuration;
@@ -83,9 +83,9 @@ public class Player : Character
         blinkDuration =             0.5f;
         blinkSetting =              true;
         
-        foreach (SpriteRenderer sprite in lifeSprites)
+        foreach (GUITexture sprite in lifeSprites)
         {
-            sprite.renderer.enabled = false;
+            sprite.enabled = false;
         }
 	}
 
@@ -282,15 +282,20 @@ public class Player : Character
     {
         guiScore.guiText.enabled = IsActive();
 
+        for (int i = 0; i < 3; i++)
+        {
+            lifeSprites[i].enabled = false;
+        }
+
         if (IsActive())
         {
             guiScore.text = "Score: " + GetScore();
             playerNumber.text = "Player " + joystick.ToString();
             pressStart.enabled = false;
 
-            //lifeSprites[0].renderer.enabled = (GetLives() >= 1);
-            //lifeSprites[1].renderer.enabled = (GetLives() >= 2);
-            //lifeSprites[2].renderer.enabled = (GetLives() >= 3);
+            lifeSprites[0].enabled = (GetLives() >= 1);
+            lifeSprites[1].enabled = (GetLives() >= 2);
+            lifeSprites[2].enabled = (GetLives() >= 3);
         }
         else
         {
