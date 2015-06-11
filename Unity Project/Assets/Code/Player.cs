@@ -166,10 +166,34 @@ public class Player : Character
 
 		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
 
-		//if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
+		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
 		{
 			transform.position = newPosition;
-		}
+		}*/
+
+
+        // X axis
+        if (transform.position.x <= -3.6f)
+        {
+            transform.position = new Vector3(-3.6f, transform.position.y,transform.position.z);
+        }
+        else if (transform.position.x >= 3.6f)
+        {
+            transform.position = new Vector3(3.6f, transform.position.y,transform.position.z);
+        }
+
+        // Z axis
+        if (transform.position.z <= -2.7f)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y,-2.7f);
+        }
+        else if (transform.position.z >= 2.7f)
+        {
+            transform.position = new Vector3(transform.position.x,transform.position.y, 2.7f);
+        }
+
+
+
 	}
 
 	private void Respawn()
