@@ -238,6 +238,12 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameOver()
     {
+        if (numActivePlayers > 0)
+        {
+            ChangeState(eGameState.eGameStateActive);
+            return;
+        }
+
         gameoverDisplay.enabled = true;
         countdownDisplay.enabled = true;
 
