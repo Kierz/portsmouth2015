@@ -4,15 +4,17 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
+    // -------------------------------------
+    // ------------- VARIABLES -------------
+    // -------------------------------------
+ 
     public enum eGameState
     {
         eGameStateReady,
         eGameStateActive,
         eGameStateGameOver
     };
-
-    static private GameManager  gm;             // singleton!
-
+    
     private eGameState          currentState;
     
     // these are used to calculate the game world dimensions
@@ -40,10 +42,26 @@ public class GameManager : MonoBehaviour
 
     private int                 numActivePlayers;
 
-    // singleton!!!
-    public static GameManager Singleton() { return gm; }
 
-	// quick accessor functions
+    // -------------------------------------
+    // ------------- SINGLETON -------------
+    // -------------------------------------
+
+    static private GameManager gm;             // singleton!
+    public static GameManager Singleton()
+    {
+        if (!gm)
+        {
+            gm = FindObjectOfType<GameManager>();
+        }
+
+        return gm;
+    }
+    
+    // ---------------------------------------------
+    // ------------- ACCESSOR FUNCTIONS ------------
+    // ---------------------------------------------
+
 	public float GetWorldTop() { return worldTop; }
 	public float GetWorldBottom() { return worldBottom; }
 	public float GetWorldLeft() { return worldLeft; }
@@ -51,6 +69,10 @@ public class GameManager : MonoBehaviour
 	public float GetWorldWidth() { return worldWidth; }
 	public float GetWorldHeight() { return worldHeight; }
 
+
+    // ---------------------------------------
+    // ------------- GM FUNCTIONS ------------
+    // ---------------------------------------
 
 	void Start ()
     {
@@ -137,7 +159,8 @@ public class GameManager : MonoBehaviour
 		UpdateBackground();
 
 		if ( inactiveEntities.Count + activeEntities.Count < GetDifficultyInEntities() )
-		{			CreateEntity();
+		{			
+            CreateEntity();
 		}
 
 		if ( activeEntities.Count < GetDifficultyInEntities() )
