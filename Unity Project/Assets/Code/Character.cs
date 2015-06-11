@@ -22,8 +22,10 @@ public class Character : Entity
     // -------------------------------------
     // ------------- VARIABLES -------------
     // -------------------------------------
- 
-	public Bullet               bullet;
+
+    public Bullet               bullet;
+    public GameObject           firingAnimation;
+    public GameObject           projectileAnimation;
     public eCharacterType       type;
     
     // ---------------------------------------------
@@ -37,7 +39,21 @@ public class Character : Entity
 		// tag the bullet
 		fired.didPlayerFireMe = (type == eCharacterType.eCharacterTypePlayer);
 
+        GameObject projecileAnim = Instantiate(projectileAnimation, position, Quaternion.EulerAngles(90.0f, 0.0f, 0.0f)) as GameObject;
+        
+        // attach projectile animation to bullet
+        projecileAnim.transform.parent = fired.transform;
+
         if (fired.didPlayerFireMe)
             fired.playerWhoFiredMe = this as Player;        // god i hate C# typecasting
+
+        // create firing animation
+        GameObject firingAnim = Instantiate(firingAnimation, transform.position + (transform.forward * 0.35f), transform.rotation) as GameObject;
+        firingAnim.transform.parent = this.transform;     // attach animation to this
+
+        // rotate sprite
+        firingAnim.transform.Rotate(90.0f, 0.0f, 0.0f);
+        firingAnim.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        firingAnim.GetComponent<Animator>().speed = 5.0f;
     }
 }

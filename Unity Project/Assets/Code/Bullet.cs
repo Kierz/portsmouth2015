@@ -14,11 +14,13 @@ public class Bullet : MonoBehaviour
     private float speed;
 	public Player playerWhoFiredMe;
     public bool didPlayerFireMe;
+    private Vector3 movementDirection;
 
 	void Start ()
     {
         lifeSpanRemaining = 1.0f;
-		speed =             50.0f;
+		speed =             20.0f;
+        movementDirection = transform.forward;
 	}
 	
 	void Update () 
@@ -32,7 +34,7 @@ public class Bullet : MonoBehaviour
 
         else
         {
-			transform.position += transform.forward * Time.deltaTime * speed;
+            transform.position += movementDirection * Time.deltaTime * speed;
         }
 	}
 }
