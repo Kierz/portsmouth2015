@@ -8,20 +8,32 @@
 using UnityEngine;
 using System.Collections;
 
-public class Bullet : MonoBehaviour 
+public class Bullet : MonoBehaviour
 {
     private float lifeSpanRemaining;
     private float speed;
-	public Player playerWhoFiredMe;
+    public Player playerWhoFiredMe;
     public bool didPlayerFireMe;
 
-	void Start ()
+
+
+    float amplitudeX = 10.0f;
+    float amplitudeZ = 5.0f;
+    float omegaX ;
+    float omegaZ ;
+    float index;
+
+
+
+
+
+    void Start()
     {
         lifeSpanRemaining = 1.0f;
-		speed =             50.0f;
-	}
-	
-	void Update () 
+        speed = 50.0f;
+    }
+
+    void Update()
     {
         lifeSpanRemaining -= Time.deltaTime;
 
@@ -32,7 +44,10 @@ public class Bullet : MonoBehaviour
 
         else
         {
-			transform.position += transform.forward * Time.deltaTime * speed;
+            transform.position += transform.forward * Time.deltaTime * speed;
         }
-	}
+    }
 }
+        
+	
+
