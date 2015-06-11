@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/*          File:       RandomShake.cs
+            Project:    RaType
+            Authors:    Phil Alassad
+                        Kierz Phillips
+            Purpose:    Game made for Portsmouh Game Jam 2015
+ */
+
+using UnityEngine;
 using System.Collections;
 
 public class RandomShake : MonoBehaviour
