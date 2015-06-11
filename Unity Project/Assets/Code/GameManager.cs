@@ -34,6 +34,10 @@ public class GameManager : MonoBehaviour
 
     public Transform            entityParent;           // this keeps the heirarchy looking neat
 
+    public GUIText              gameoverDisplay;
+    public GUIText              countdownDisplay;
+    private float               gameoverToggleDelay;        // delay before flashing the game over msg on/off
+
 	private float               worldTop, worldBottom;
 	private float               worldLeft, worldRight;
 	private float               worldWidth;
@@ -47,8 +51,7 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
-	private float				delayBeforeEntitySpawn;				// this var holds the counting down time
-	private const float			delayBeforeEntitySpawnTime = 1.25f;	// this var holds the number which the other uses when reset
+	private float				delayBeforeEntitySpawn;
 
 	public List<GameObject>		backgrounds;
 	public List<Entity>			entityList;
@@ -158,6 +161,9 @@ public class GameManager : MonoBehaviour
 
     private void UpdateReady()
     {
+        gameoverDisplay.enabled = false;
+        countdownDisplay.enabled = false;
+
         if (numActivePlayers > 0)
         {
             ChangeState(eGameState.eGameStateActive);
@@ -167,6 +173,9 @@ public class GameManager : MonoBehaviour
 
     private void UpdateActive()
     {
+        gameoverDisplay.enabled = false;
+        countdownDisplay.enabled = false;
+
         if (numActivePlayers == 0)
         {
             ChangeState(eGameState.eGameStateGameOver);
@@ -186,8 +195,8 @@ public class GameManager : MonoBehaviour
 
 			if ( delayBeforeEntitySpawn <= 0.0f )
 			{
-				ActivateEntity();
-				delayBeforeEntitySpawn = delayBeforeEntitySpawnTime;
+				Entity recentlySpawned = ActivateEntity();
+				delayBeforeEntitySpawn = recentlySpawned.spawnDelay;
 			}
 		}
 
@@ -229,6 +238,15 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameOver()
     {
+        gameoverDisplay.enabled = true;
+        countdownDisplay.enabled = true;
+
+        Color colour = gameoverDisplay.color;
+        colour.a = (Mathf.Cos(countdown * 2.0f) + 1.0f) * 0.5f;
+        gameoverDisplay.color = colour;
+
+        countdownDisplay.text = GetCoundownAsString();
+
         // switch state when countdown reaches zero
         if ((countdown -= Time.deltaTime) < 0)
         {
@@ -291,9 +309,13 @@ public class GameManager : MonoBehaviour
     }
     
 	// override
-	private void ActivateEntity()
+	private Entity ActivateEntity()
 	{
-		ActivateEntity( inactiveEntities[ Random.Range( 0, inactiveEntities.Count - 1 ) ] );
+        Entity spawning = inactiveEntities[Random.Range(0, inactiveEntities.Count - 1)];
+
+		ActivateEntity( spawning );
+
+        return spawning;
 	}
 
     private void ActivateEntity(Entity entity)
