@@ -47,8 +47,7 @@ public class GameManager : MonoBehaviour
     private List<Entity>        activeEntities;
     private List<Entity>        inactiveEntities;
 
-	private float				delayBeforeEntitySpawn;				// this var holds the counting down time
-	private const float			delayBeforeEntitySpawnTime = 1.25f;	// this var holds the number which the other uses when reset
+	private float				delayBeforeEntitySpawn;
 
 	public List<GameObject>		backgrounds;
 	public List<Entity>			entityList;
@@ -186,8 +185,8 @@ public class GameManager : MonoBehaviour
 
 			if ( delayBeforeEntitySpawn <= 0.0f )
 			{
-				ActivateEntity();
-				delayBeforeEntitySpawn = delayBeforeEntitySpawnTime;
+				Entity recentlySpawned = ActivateEntity();
+				delayBeforeEntitySpawn = recentlySpawned.spawnDelay;
 			}
 		}
 
@@ -291,9 +290,13 @@ public class GameManager : MonoBehaviour
     }
     
 	// override
-	private void ActivateEntity()
+	private Entity ActivateEntity()
 	{
-		ActivateEntity( inactiveEntities[ Random.Range( 0, inactiveEntities.Count - 1 ) ] );
+        Entity spawning = inactiveEntities[Random.Range(0, inactiveEntities.Count - 1)];
+
+		ActivateEntity( spawning );
+
+        return spawning;
 	}
 
     private void ActivateEntity(Entity entity)
