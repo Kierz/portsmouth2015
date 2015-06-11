@@ -229,19 +229,6 @@ public class Player : Character
             transform.position = new Vector3(3.6f, transform.position.y,transform.position.z);
         }
 
-        // Z axis
-        if (transform.position.z <= -2.7f)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y,-2.7f);
-        }
-        else if (transform.position.z >= 2.7f)
-        {
-            transform.position = new Vector3(transform.position.x,transform.position.y, 2.7f);
-        }
-
-
-
-
         // update position
         transform.position = transform.position + (movement * speed * speedFactor * Time.deltaTime);
 
