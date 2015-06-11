@@ -29,7 +29,6 @@ public class HudStuff : MonoBehaviour
         Life2.renderer.enabled = false;
         Life3.renderer.enabled = false;
         StartCoroutine(Blink());
-       
 	}
 	
 	
@@ -44,8 +43,12 @@ public class HudStuff : MonoBehaviour
             guiScore.text = "Score: " +player.GetScore();
             guiLives.text = "Lives: " +player.GetLives();
             playerNumber.text = "Player ";
+
+
             blinking = false;//turn off blinking
             livesRemaining = player.GetLives();
+
+
             if (livesRemaining == 3)
             {
                 Life1.renderer.enabled = true;

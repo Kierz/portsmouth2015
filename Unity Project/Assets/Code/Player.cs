@@ -10,6 +10,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : Character
 {
@@ -48,9 +49,13 @@ public class Player : Character
 	public eInputType       inputType;
 
 	public GUIText          guiScore;
-	public GUIText          guiLives;
 	public GUIText          playerNumber;
 	public GUIText          pressStart;
+    public List<SpriteRenderer> lifeSprites;
+
+    private float           blinkDelay;
+    private float           blinkDuration;
+    private bool            blinkSetting;
 
     // ---------------------------------------------
     // ------------- ACCESSOR FUNCTIONS ------------
@@ -74,6 +79,14 @@ public class Player : Character
 		invincibilityTime =         2.0f;
 		speedFactor =               1.0f;
 		lives =                     3;
+        blinkDelay =                0.0f;
+        blinkDuration =             0.5f;
+        blinkSetting =              true;
+        
+        foreach (SpriteRenderer sprite in lifeSprites)
+        {
+            sprite.renderer.enabled = false;
+        }
 	}
 
 	void Update()
@@ -101,6 +114,8 @@ public class Player : Character
 			UpdateFire();
 			break;
 		}
+
+        UpdateHUD();
 	}
 
 	private void UpdateInactive()
@@ -108,20 +123,25 @@ public class Player : Character
 		if ( inputType == eInputType.eInputTypeController )
 		{
 			//Game waits for player to press start before bat control is authorised
-			if ( Input.GetButtonDown( "Start_P" + joystick.ToString() ) )
-				Respawn();
+            if ( Input.GetButtonDown("Start_P" + joystick.ToString() ) )
+            {
+                print("Spawning method 1: " + name);
+                Respawn();
+            }
 		}
-		else
+		
+        if ( inputType == eInputType.eInputTypeKeyboard)
 		{
 			if ( Input.GetButtonDown( "Submit" ) )
+            {
+                print("Spawning method 2: " + name);
 				Respawn();
+            }
 		}
 	}
 
 	private void UpdateFire()
 	{
-		string joystickString = joystick.ToString();
-
 		if ( inputType == eInputType.eInputTypeKeyboard )
 		{
 			if ( Input.GetButtonDown( "Fire1" ) )
@@ -253,16 +273,28 @@ public class Player : Character
 
     private void UpdateHUD()
     {
-        guiLives.guiText.enabled = IsActive();
         guiScore.guiText.enabled = IsActive();
-        pressStart.guiText.enabled = !IsActive();
 
         if (IsActive())
         {
             guiScore.text = "Score: " + GetScore();
-            guiLives.text = "Lives: " + GetLives();
             playerNumber.text = "Player " + joystick.ToString();
-            pressStart.text = "Press Start";
+            pressStart.enabled = false;
+
+            //lifeSprites[0].renderer.enabled = (GetLives() >= 1);
+            //lifeSprites[1].renderer.enabled = (GetLives() >= 2);
+            //lifeSprites[2].renderer.enabled = (GetLives() >= 3);
+        }
+        else
+        {
+            blinkDelay -= Time.deltaTime;
+
+            if (blinkDelay < 0.0f)
+            {
+                blinkSetting = !(blinkSetting);         // swap blink setting
+                pressStart.guiText.enabled = blinkSetting;
+                blinkDelay = blinkDuration;
+            }
         }
     }
 

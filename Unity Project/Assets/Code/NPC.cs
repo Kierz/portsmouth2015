@@ -54,7 +54,7 @@ public class NPC : Character
         deltaTime =        0;
         currentState =     eNPCState.Disabled;
         currentEnemy =     eEnemyType.Default;
-        creationZone =     GameManager.Singleton().GetWorldTop() + GameManager.Singleton().GetWorldHeight();
+        creationZone =     GameManager.Singleton().GetCreationZone();
     }
 
     protected void Update()

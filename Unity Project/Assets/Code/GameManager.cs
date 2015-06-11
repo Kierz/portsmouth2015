@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private List<Entity>        inactiveEntities;
 
 	private float				delayBeforeEntitySpawn;				// this var holds the counting down time
-	private const float			delayBeforeEntitySpawnTime = 0.25f;	// this var holds the number which the other uses when reset
+	private const float			delayBeforeEntitySpawnTime = 1.25f;	// this var holds the number which the other uses when reset
 
 	public List<GameObject>		backgrounds;
 	public List<Entity>			entityList;
@@ -79,7 +79,10 @@ public class GameManager : MonoBehaviour
 	public float GetWorldRight() { return worldRight; }
 	public float GetWorldWidth() { return worldWidth; }
 	public float GetWorldHeight() { return worldHeight; }
-
+    public float GetCreationZone() { return worldTop + worldHeight; }
+    public Vector3 GetWorldCentre() { return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f); }
+    public float GetDestructionLineZ() { return worldBottom - (worldHeight * 3.0f); }
+    public eGameState GetGameState() { return currentState; }
 
     // ---------------------------------------
     // ------------- GM FUNCTIONS ------------
@@ -246,6 +249,16 @@ public class GameManager : MonoBehaviour
 
     private void ResetGame()
     {
+        foreach (Entity entity in activeEntities)
+        {
+            DestroyObject(entity.gameObject);
+        }
+
+        foreach (Entity entity in inactiveEntities)
+        {
+            DestroyObject(entity.gameObject);
+        }
+
 		// clear entity lists
 		activeEntities.Clear();
 		inactiveEntities.Clear();
@@ -263,12 +276,7 @@ public class GameManager : MonoBehaviour
 
         return playerCount;
     }
-
-    private eGameState GetGameState()
-    {
-        return currentState;
-    }
-
+    
 	// override
 	private void ActivateEntity()
 	{
@@ -320,15 +328,6 @@ public class GameManager : MonoBehaviour
         return displayCountdown.ToString();
     }
 
-    public Vector3 GetWorldCentre()
-    {
-        return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f);
-    }
-
-    public float GetDestructionLineZ()
-    {
-        return worldBottom - (worldHeight * 3.0f);
-    }
 
 	private void UpdateBackground()
 	{
