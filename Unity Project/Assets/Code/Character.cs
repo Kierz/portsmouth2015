@@ -7,6 +7,9 @@ public class Character : Entity
 
     protected void Fire(Vector3 position, Quaternion direction)
     {
-		Instantiate( bullet, position, direction );
+		Bullet fired = Instantiate( bullet, position, direction ) as Bullet;
+
+		// tag the bullet with our ID
+		fired.whoFiredMe = this;
     }
 }

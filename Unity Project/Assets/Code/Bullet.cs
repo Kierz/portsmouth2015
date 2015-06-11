@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour
 {
     private float lifeSpanRemaining;
     private float speed;
+	public Entity whoFiredMe;
 
 	void Start ()
     {
