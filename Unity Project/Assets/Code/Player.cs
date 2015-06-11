@@ -206,40 +206,8 @@ public class Player : Character
 		// lerp from current rotation to intended facing direction
 		transform.rotation = Quaternion.RotateTowards( currentRotation, transform.rotation, Time.deltaTime * rotationSpeed );
 
-		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
-
-<<<<<<< HEAD
-		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
-=======
-		if ( !IsOffScreen( newPosition ) )
->>>>>>> e660e621c201cafdfed59fe78eaba5260e8be4b6
-		{
-			transform.position = newPosition;
-		}*/
-
-
-        // X axis
-        if (transform.position.x <= -3.6f)
-        {
-            transform.position = new Vector3(-3.6f, transform.position.y,transform.position.z);
-        }
-        else if (transform.position.x >= 3.6f)
-        {
-            transform.position = new Vector3(3.6f, transform.position.y,transform.position.z);
-        }
-
-        // Z axis
-        if (transform.position.z <= -2.7f)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y,-2.7f);
-        }
-        else if (transform.position.z >= 2.7f)
-        {
-            transform.position = new Vector3(transform.position.x,transform.position.y, 2.7f);
-        }
-
-
-
+        // update position
+        transform.position = transform.position + (movement * speed * speedFactor * Time.deltaTime);
 	}
 
 	private void Respawn()
@@ -377,6 +345,24 @@ public class Player : Character
         if (transform.position.z <= GameManager.Singleton().GetWorldBottom())
         {
             PlayerDeath();
+        }
+
+        // cap left movement
+        if (transform.position.x <= GameManager.Singleton().GetWorldLeft())
+        {
+            transform.position = new Vector3(GameManager.Singleton().GetWorldLeft(), transform.position.y, transform.position.z);
+        }
+
+        // cap right movement
+        else if (transform.position.x >= GameManager.Singleton().GetWorldRight())
+        {
+            transform.position = new Vector3(GameManager.Singleton().GetWorldRight(), transform.position.y, transform.position.z);
+        }
+
+        // cap upper movement
+        if (transform.position.z >= GameManager.Singleton().GetWorldTop())
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.Singleton().GetWorldTop());
         }
     }
 }
