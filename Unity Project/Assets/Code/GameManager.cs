@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     public Transform            entityParent;           // this keeps the heirarchy looking neat
 
+    public GUIText              gameoverDisplay;
+
 	private float               worldTop, worldBottom;
 	private float               worldLeft, worldRight;
 	private float               worldWidth;
