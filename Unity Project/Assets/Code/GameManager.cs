@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public Transform            bottomLeftAnchorPoint;
     public Transform            topRightAnchorPoint;
 
+    public Transform            entityParent;           // this keeps the heirarchy looking neat
+
 	private float               worldTop, worldBottom;
 	private float               worldLeft, worldRight;
 	private float               worldWidth;
@@ -79,9 +81,10 @@ public class GameManager : MonoBehaviour
 	public float GetWorldRight() { return worldRight; }
 	public float GetWorldWidth() { return worldWidth; }
 	public float GetWorldHeight() { return worldHeight; }
-    public float GetCreationZone() { return worldTop + worldHeight; }
+    public float GetCreationZone() { return worldTop + (worldHeight * 0.5f); }
     public Vector3 GetWorldCentre() { return Vector3.Lerp(bottomLeftAnchorPoint.position, topRightAnchorPoint.position, 0.5f); }
-    public float GetDestructionLineZ() { return worldBottom - (worldHeight * 3.0f); }
+    public float GetDestructionLineZ() { return worldBottom - worldHeight; }
+    public float GetBackgroundRespawnLineZ() { return worldBottom - (worldHeight * 3.0f); }
     public eGameState GetGameState() { return currentState; }
 
     // ---------------------------------------
@@ -126,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         // setup the game
 	    ChangeState(eGameState.eGameStateReady);
-		delayBeforeEntitySpawn = 0.3f;
+		delayBeforeEntitySpawn = 0.5f;
 	}	
 
 	void FixedUpdate ()
@@ -191,12 +194,22 @@ public class GameManager : MonoBehaviour
         // update active entities
         if (activeEntities.Count > 0)
         {
+            List<Entity> tempList = new List<Entity>();
+
             foreach (Entity entity in activeEntities)
             {
                 // move entitiy down the screen relative to the game speed
                 entity.transform.position -= Vector3.forward * gameSpeed * Time.deltaTime;
 
                 if (entity.transform.position.z < GetDestructionLineZ())
+                {
+                    tempList.Add(entity);
+                }
+            }
+
+            if (tempList.Count > 0)
+            {
+                foreach (Entity entity in tempList)
                 {
                     DeactivateEntity(entity);
                 }
@@ -291,6 +304,9 @@ public class GameManager : MonoBehaviour
 
         inactiveEntities.Remove(entity);
         activeEntities.Add(entity);
+                
+        // respawn entity
+        entity.transform.position = GetSpawnLocation();
     }
 
     private void DeactivateEntity(Entity entity)
@@ -312,8 +328,14 @@ public class GameManager : MonoBehaviour
 		// pick a random entity
 		int random = Random.Range( 0, entityList.Count - 1 );
 
+        // create randomised spawn location
+        Vector3 spawnLocation = GetSpawnLocation();
+
 		// this is placeholder, real values will be needed
-		Entity entity = Instantiate( entityList[random], GetWorldCentre(), Quaternion.identity ) as Entity;
+		Entity entity = Instantiate( entityList[random], spawnLocation, Quaternion.identity ) as Entity;
+
+        // attach to parent
+        entity.transform.parent = entityParent;
 
 		// add entity to inactive list
 		inactiveEntities.Add( entity );
@@ -335,7 +357,7 @@ public class GameManager : MonoBehaviour
 		{
 			background.transform.position -= new Vector3( 0.0f, 0.0f, gameSpeed * Time.deltaTime );
 
-			if ( background.transform.position.z <= GetDestructionLineZ() )
+			if ( background.transform.position.z <= GetBackgroundRespawnLineZ() )
 			{
 				background.transform.position += new Vector3( background.transform.position.x, background.transform.position.y, background.renderer.bounds.size.z * 3.0f );
 			}
@@ -346,6 +368,18 @@ public class GameManager : MonoBehaviour
 	{
 		// this is pretty basic right now!
 		// TODO: make this a little more advanced...
-		return 2 + numActivePlayers;
+		return 15 + (numActivePlayers * 3);
 	}
+
+    private Vector3 GetSpawnLocation()
+    {
+        Vector3 spawnLocation = new Vector3();
+
+        // pick a random x position                                             PLACEHOLDER!!!
+        spawnLocation.x = Random.Range(worldLeft, worldRight);
+        spawnLocation.y = 0.0f;
+        spawnLocation.z = GetCreationZone();
+
+        return spawnLocation;
+    }
 }

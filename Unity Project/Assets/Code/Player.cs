@@ -98,8 +98,7 @@ public class Player : Character
 			break;
 
 			case ePlayerState.ePlayerStateNormal:
-			Move();
-			UpdateFire();
+            UpdateNormal();
 			break;
 
 			case ePlayerState.ePlayerStateInvincible:
@@ -110,13 +109,19 @@ public class Player : Character
 				SetState( ePlayerState.ePlayerStateNormal );
 			}
 
-			Move();
-			UpdateFire();
+            UpdateNormal();
 			break;
 		}
 
         UpdateHUD();
 	}
+
+    private void UpdateNormal()
+    {
+        Move();
+        UpdateFire();
+        CheckPosition();
+    }
 
 	private void UpdateInactive()
 	{
@@ -125,7 +130,6 @@ public class Player : Character
 			//Game waits for player to press start before bat control is authorised
             if ( Input.GetButtonDown("Start_P" + joystick.ToString() ) )
             {
-                print("Spawning method 1: " + name);
                 Respawn();
             }
 		}
@@ -134,7 +138,6 @@ public class Player : Character
 		{
 			if ( Input.GetButtonDown( "Submit" ) )
             {
-                print("Spawning method 2: " + name);
 				Respawn();
             }
 		}
@@ -205,7 +208,7 @@ public class Player : Character
 
 		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
 
-		//if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
+		if ( !IsOffScreen( newPosition ) )
 		{
 			transform.position = newPosition;
 		}
@@ -225,6 +228,10 @@ public class Player : Character
 		{
 			SetState( ePlayerState.ePlayerStateInactive );
 		}
+        else
+        {
+            Respawn();
+        }
 	}
 
     private bool IsOffScreen(Vector3 position)
@@ -331,4 +338,12 @@ public class Player : Character
 			speedFactor = 1.0f;
 		}
 	}
+
+    private void CheckPosition()
+    {
+        if (transform.position.z <= GameManager.Singleton().GetWorldBottom())
+        {
+            PlayerDeath();
+        }
+    }
 }

@@ -17,7 +17,6 @@ public class Bullet : MonoBehaviour
 
 	void Start ()
     {
-        tag =               "Bullet";
         lifeSpanRemaining = 1.0f;
 		speed =             50.0f;
 	}
