@@ -132,10 +132,14 @@ public class GameManager : MonoBehaviour
 
 		UpdateBackground();
 
-		while ( inactiveEntities.Count + activeEntities.Count < GetDifficultyInEntities() )
+		if ( inactiveEntities.Count + activeEntities.Count < GetDifficultyInEntities() )
 		{
-			// placeholder!
-			ActivateEntity(CreateEntity());
+			CreateEntity();
+		}
+
+		if ( activeEntities.Count < GetDifficultyInEntities() )
+		{
+			ActivateEntity();
 		}
 
         // update active entities
@@ -222,6 +226,12 @@ public class GameManager : MonoBehaviour
         return currentState;
     }
 
+	// override
+	private void ActivateEntity()
+	{
+		ActivateEntity( inactiveEntities[ Random.Range( 0, inactiveEntities.Count - 1 ) ] );
+	}
+
     private void ActivateEntity(Entity entity)
     {
         // early out if already active
@@ -294,6 +304,6 @@ public class GameManager : MonoBehaviour
 	{
 		// this is pretty basic right now!
 		// TODO: make this a little more advanced...
-		return numActivePlayers;
+		return 2 + numActivePlayers;
 	}
 }
