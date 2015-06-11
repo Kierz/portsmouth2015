@@ -10,6 +10,7 @@ public class HudStuff : MonoBehaviour
     public GUIText guiLives;
     public GUIText playerNumber;
     public GUIText pressStart;
+    public GUIText lastScore;
 
     public SpriteRenderer Life1;
     public SpriteRenderer Life2;
@@ -23,8 +24,7 @@ public class HudStuff : MonoBehaviour
 	
 	void Start () 
     {
-        //guiScore.text = "Score: 0";
-        //guiLives.text = "Lives: ";
+        lastScore.text = "Last Score: " + player.GetScore();
         Life1.renderer.enabled = false;
         Life2.renderer.enabled = false;
         Life3.renderer.enabled = false;
@@ -38,7 +38,7 @@ public class HudStuff : MonoBehaviour
         guiLives.guiText.enabled = player.IsActive();
         guiScore.guiText.enabled = player.IsActive();
         pressStart.guiText.enabled = !player.IsActive();
-        
+        lastScore.guiText.enabled = !player.IsActive();
         if (player.IsActive())
         {
             guiScore.text = "Score: " +player.GetScore();
