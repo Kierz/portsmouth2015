@@ -12,13 +12,7 @@ public class NPC : Character
     // ---------------------------------
     // ------------- ENUMS -------------
     // ---------------------------------
-
-    public enum eNPCState
-    {
-        Active,
-        Disabled
-    }
-
+    
     public enum eEnemyType
     {
         Default,
@@ -34,7 +28,6 @@ public class NPC : Character
     public int                      speed;              //Speed will be used for custom movement, not used currently.
     public int                      scoreValue;         // score given to player when destroyed
 
-    private eNPCState               currentState;
     private eEnemyType              currentEnemy;
     private float                   xpos, zpos, ypos;
     protected float                 creationZone;       // ypos of the creation zone
@@ -54,51 +47,29 @@ public class NPC : Character
         xpos =             0;
         ypos =             0;
         zpos =             0;
-        currentState =     eNPCState.Disabled;
         currentEnemy =     eEnemyType.Default;
         creationZone =     GameManager.Singleton().GetCreationZone();
         delayBeforeFiring = 0;
+
+        if (fireDelay == 0)
+            fireDelay = 1.0f;           // if fire delay has not been set, default to 1 second
     }
 
     protected void Update()
     {
-        if (currentState == eNPCState.Disabled)
+        if (npcActive)
         {
-            int wait = Random.Range(2, 8);
-            deltaTime += Time.deltaTime;
-            if (deltaTime >= wait)
+            if (health <= 0)
             {
-                deltaTime = 0;
-                Spawn();
+                GameManager.Singleton().DeactivateEntity(this);
             }
-        }            
 
-        if (health <= 0)
-        {
-            Explode();
+            if (health > 0)
+            {
+                Movement();
+                Shoot();
+            }
         }
-
-        if(health > 0)
-        {
-            Movement();
-            Shoot();
-        }
-    }
-
-    protected void Explode()
-    {
-        ypos = Random.Range(creationZone, creationZone + GameManager.Singleton().GetWorldHeight());
-        currentState = eNPCState.Disabled;
-    }
-
-    protected void Spawn()
-    {
-        health = 1;
-        xpos = Random.Range(GameManager.Singleton().GetWorldLeft(), GameManager.Singleton().GetWorldTop());
-        ypos = GameManager.Singleton().GetWorldHeight() - GameManager.Singleton().GetWorldTop();
-        zpos = GameManager.Singleton().GetWorldTop();
-        transform.position = new Vector3(xpos, ypos, zpos);
-        currentState = eNPCState.Active;
     }
 
     void Movement()

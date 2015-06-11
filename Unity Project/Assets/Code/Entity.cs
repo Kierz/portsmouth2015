@@ -10,6 +10,7 @@ using System.Collections;
 public class Entity : MonoBehaviour 
 {
     public float spawnDelay;            // delay until next entity can be spawned
+    public bool npcActive;              // am i active?
 
 	// this class is used for tagging and inheritance only
 }
