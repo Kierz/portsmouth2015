@@ -37,6 +37,7 @@ public class Player : Character
      
     private int             lives;
 	private int             score;
+	private int				scoreToAdd;
 	private ePlayerState    currentState;
 
 	private float           speed;
@@ -65,7 +66,7 @@ public class Player : Character
 	public int GetLives() { return lives; }
 	public int GetScore() { return score; }
 	public bool IsActive() { return ( currentState != ePlayerState.ePlayerStateInactive ); }
-    public void AddScore(int value) { score += value; }
+    public void AddScore(int value) { scoreToAdd += value; }
     
     // -------------------------------------------
     // ------------- PLAYER FUNCTIONS ------------
@@ -121,6 +122,7 @@ public class Player : Character
         Move();
         UpdateFire();
         CheckPosition();
+		UpdateScore();
     }
 
 	private void UpdateInactive()
@@ -212,8 +214,32 @@ public class Player : Character
 		// lerp from current rotation to intended facing direction
 		transform.rotation = Quaternion.RotateTowards( currentRotation, transform.rotation, Time.deltaTime * rotationSpeed );
 
+
+		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
+
+
+		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
+
+		if ( !IsOffScreen( newPosition ) )
+
+		{
+			transform.position = newPosition;
+		}*/
+
+
+        // X axis
+        if (transform.position.x <= -3.6f)
+        {
+            transform.position = new Vector3(-3.6f, transform.position.y,transform.position.z);
+        }
+        else if (transform.position.x >= 3.6f)
+        {
+            transform.position = new Vector3(3.6f, transform.position.y,transform.position.z);
+        }
+
         // update position
         transform.position = transform.position + (movement * speed * speedFactor * Time.deltaTime);
+
 	}
 
 	private void Respawn()
@@ -294,7 +320,6 @@ public class Player : Character
         if (IsActive())
         {
             guiScore.text = "Score: " + GetScore();
-            playerNumber.text = "Player " + joystick.ToString();
             pressStart.enabled = false;
 
             lifeSprites[0].enabled = (GetLives() >= 1);
@@ -373,4 +398,13 @@ public class Player : Character
             transform.position = new Vector3(transform.position.x, transform.position.y, GameManager.Singleton().GetWorldTop());
         }
     }
+
+	private void UpdateScore()
+	{
+		if ( scoreToAdd > 0 )
+		{
+			scoreToAdd -= 1;
+			score += 1;
+		}
+	}
 }

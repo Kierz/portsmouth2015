@@ -10,31 +10,29 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour 
 {
-    private float lifeSpanRemaining;
-    private float speed;
+	private float lifeSpanRemaining;
+	private float speed;
 	public Player playerWhoFiredMe;
-    public bool didPlayerFireMe;
-    private Vector3 movementDirection;
-
+	public bool didPlayerFireMe;
+	
 	void Start ()
-    {
-        lifeSpanRemaining = 1.0f;
-		speed =             20.0f;
-        movementDirection = transform.forward;
+	{
+		lifeSpanRemaining = 1.0f;
+		speed =             50.0f;
 	}
 	
 	void Update () 
-    {
-        lifeSpanRemaining -= Time.deltaTime;
-
-        if (lifeSpanRemaining <= 0.0f)
-        {
-            DestroyObject(gameObject);
-        }
-
-        else
-        {
-            transform.position += movementDirection * Time.deltaTime * speed;
-        }
+	{
+		lifeSpanRemaining -= Time.deltaTime;
+		
+		if (lifeSpanRemaining <= 0.0f)
+		{
+			DestroyObject(gameObject);
+		}
+		
+		else
+		{
+			transform.position += transform.forward * Time.deltaTime * speed;
+		}
 	}
 }
