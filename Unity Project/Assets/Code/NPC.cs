@@ -29,7 +29,6 @@ public class NPC : Character
     public int                      scoreValue;         // score given to player when destroyed
 
     private eEnemyType              currentEnemy;
-    private float                   xpos, zpos, ypos;
     protected float                 creationZone;       // ypos of the creation zone
 
     public float                    fireDelay;
@@ -44,9 +43,6 @@ public class NPC : Character
     {
         gameObject.tag =   "Enemy";
         speed =            0;
-        xpos =             0;
-        ypos =             0;
-        zpos =             0;
         currentEnemy =     eEnemyType.Default;
         creationZone =     GameManager.Singleton().GetCreationZone();
         delayBeforeFiring = 0;

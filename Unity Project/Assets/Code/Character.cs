@@ -43,6 +43,7 @@ public class Character : Entity
         
         // attach projectile animation to bullet
         projecileAnim.transform.parent = fired.transform;
+        projecileAnim.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
 
         if (fired.didPlayerFireMe)
             fired.playerWhoFiredMe = this as Player;        // god i hate C# typecasting
