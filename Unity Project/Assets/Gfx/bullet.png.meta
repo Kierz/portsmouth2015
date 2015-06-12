@@ -62,72 +62,26 @@ TextureImporter:
     - name: bullet_0
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 4
-        y: 1464
-        width: 507
-        height: 442
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 0
         y: 1533
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_1
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 504
-        y: 1494
-        width: 500
-        height: 382
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 512
         y: 1533
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_2
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1004
-        y: 1504
-        width: 512
-        height: 530
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 178}
-    - name: bullet_3
-      rect:
-        serializedVersion: 2
-        x: 1514
-        y: 1524
-        width: 515
-        height: 500
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 128}
-    - name: bullet_4
-      rect:
-        serializedVersion: 2
-        x: 4
-        y: 1002
-        width: 518
-        height: 432
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1024
         y: 1533
         width: 512
@@ -154,216 +108,116 @@ TextureImporter:
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_5
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 504
-        y: 1022
-        width: 500
-        height: 412
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 512
         y: 1022
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_6
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1021
-        y: 992
-        width: 504
-        height: 474
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1024
         y: 1022
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_7
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1535
-        y: 1002
-        width: 501
-        height: 426
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1536
         y: 1022
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_8
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 4
-        y: 590
-        width: 518
-        height: 372
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 0
         y: 511
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_9
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 504
-        y: 610
-        width: 500
-        height: 352
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 512
         y: 511
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_10
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1004
-        y: 610
-        width: 522
-        height: 342
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1024
         y: 511
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_11
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1494
-        y: 630
-        width: 525
-        height: 251
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1536
         y: 511
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_12
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 4
-        y: 118
-        width: 558
-        height: 271
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 0
         y: 0
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_13
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 504
-        y: 138
-        width: 560
-        height: 281
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 512
         y: 0
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_14
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1004
-        y: 108
-        width: 543
-        height: 271
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1024
         y: 0
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: bullet_15
       rect:
         serializedVersion: 2
-<<<<<<< HEAD
-        x: 1504
-        y: 128
-        width: 544
-        height: 281
-      alignment: 0
-      pivot: {x: .5, y: .5}
-=======
         x: 1536
         y: 0
         width: 512
         height: 511
       alignment: 0
       pivot: {x: 0, y: 0}
->>>>>>> db6b9899f9a01d65306e0a640186922aa19f5815
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

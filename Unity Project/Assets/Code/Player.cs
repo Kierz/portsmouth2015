@@ -213,12 +213,8 @@ public class Player : Character
 
 		// lerp from current rotation to intended facing direction
 		transform.rotation = Quaternion.RotateTowards( currentRotation, transform.rotation, Time.deltaTime * rotationSpeed );
-
-
-		Vector3 newPosition = transform.position + ( movement * speed * speedFactor * Time.deltaTime );
-
-
-		/*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
+        
+        /*if ( !IsOffScreen( newPosition ) )		this was awfull, dont use it!
 
 		if ( !IsOffScreen( newPosition ) )
 
@@ -352,15 +348,9 @@ public class Player : Character
 			speedFactor = 0.5f;
 		}
 
-		if ( col.gameObject.tag == "Kill" )
+		if ( col.gameObject.tag == "Kill" || col.gameObject.tag == "Bullet" )
 		{
-			// respawn player if they have enough lives left, if not gameover
-			PlayerDeath();
-		}
-
-		if ( col.gameObject.tag == "Bullet" )
-		{
-			//Respawn player if hit by a lovely bullet.
+            // respawn player if they have enough lives left, if not gameover
 			PlayerDeath();
 		}
 	}
