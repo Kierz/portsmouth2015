@@ -39,7 +39,7 @@ public class Character : Entity
 		// tag the bullet
 		fired.didPlayerFireMe = (type == eCharacterType.eCharacterTypePlayer);
 
-        GameObject projecileAnim = Instantiate(projectileAnimation, position, Quaternion.EulerAngles(90.0f, 0.0f, 0.0f)) as GameObject;
+        GameObject projecileAnim = Instantiate(projectileAnimation, position, Quaternion.EulerAngles(90.0f, 0.0f, 0.0f) * direction) as GameObject;
         
         // attach projectile animation to bullet
         projecileAnim.transform.parent = fired.transform;

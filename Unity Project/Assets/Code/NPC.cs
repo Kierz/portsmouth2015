@@ -62,11 +62,12 @@ public class NPC : Character
 
             if (health > 0)
             {
-                Movement();
+                //Movement();
                 Shoot();
             }
         }
     }
+	/*
 
     void Movement()
     {
@@ -84,12 +85,15 @@ public class NPC : Character
         }
 
     }
-
+	*/
     void OnTriggerEnter(Collider col)
     {
         //If it's a bullet we hit, deduct ONE POINT FROM GRYFINDO- Health. Yes. That.
+		print( "IVE BEEN HIT!" );
+
         if(col.gameObject.tag == "Bullet")
         {
+			print( "BYA BULLET" );
             Bullet bullet = col.GetComponent<Bullet>();
 
             // only respond to bullets fired by the player

@@ -332,9 +332,9 @@ public class GameManager : MonoBehaviour
 
         inactiveEntities.Remove(entity);
         activeEntities.Add(entity);
-                
+
         // respawn entity
-        entity.transform.position = GetSpawnLocation();
+		entity.transform.position = new Vector3( Random.Range( worldLeft, worldRight ), entity.transform.position.y, GetCreationZone() ); ;
 
         entity.npcActive = true;
     }
@@ -349,7 +349,7 @@ public class GameManager : MonoBehaviour
         inactiveEntities.Add(entity);
 
         // respawn entity
-        entity.transform.position = GetSpawnLocation();
+		entity.transform.position = new Vector3( Random.Range( worldLeft, worldRight ), entity.transform.position.y, GetCreationZone() );
 
         entity.npcActive = false;
     }
@@ -364,10 +364,13 @@ public class GameManager : MonoBehaviour
 		int random = Random.Range( 0, entityList.Count - 1 );
 
         // create randomised spawn location
-        Vector3 spawnLocation = GetSpawnLocation();
+		Vector3 spawnLocation = new Vector3();
+		spawnLocation.x = Random.Range( worldLeft, worldRight );
+		spawnLocation.z = GetCreationZone();
+		// do not change the y!
 
 		// this is placeholder, real values will be needed
-		Entity entity = Instantiate( entityList[random], spawnLocation, Quaternion.identity ) as Entity;
+		Entity entity = Instantiate( entityList[random], spawnLocation + entityList[random].transform.position, entityList[random].transform.rotation ) as Entity;
 
         // attach to parent
         entity.transform.parent = entityParent;
@@ -403,18 +406,6 @@ public class GameManager : MonoBehaviour
 	{
 		// this is pretty basic right now!
 		// TODO: make this a little more advanced...
-		return 15 + (numActivePlayers * 3);
+		return 20 + (numActivePlayers * 5);
 	}
-
-    private Vector3 GetSpawnLocation()
-    {
-        Vector3 spawnLocation = new Vector3();
-
-        // pick a random x position                                             PLACEHOLDER!!!
-        spawnLocation.x = Random.Range(worldLeft, worldRight);
-        spawnLocation.y = 0.0f;
-        spawnLocation.z = GetCreationZone();
-
-        return spawnLocation;
-    }
 }

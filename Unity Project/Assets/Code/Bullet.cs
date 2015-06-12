@@ -18,7 +18,10 @@ public class Bullet : MonoBehaviour
 	void Start ()
 	{
 		lifeSpanRemaining = 1.0f;
-		speed =             50.0f;
+		speed =             20.0f;
+
+		// attach to this gameobject to keep the hierarchy clean
+		transform.parent = GameObject.FindGameObjectWithTag( "BulletsParent" ).transform;
 	}
 	
 	void Update () 
